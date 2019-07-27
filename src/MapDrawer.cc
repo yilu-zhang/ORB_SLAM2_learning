@@ -27,7 +27,7 @@
 namespace ORB_SLAM2
 {
 
-
+//从设置文件.yaml中读取设置参数
 MapDrawer::MapDrawer(Map* pMap, const string &strSettingPath):mpMap(pMap)
 {
     cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);

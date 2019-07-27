@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 
     // Retrieve paths to images
     vector<string> vstrImageFilenames;
+    //字符.直接转换成小数点，如1305031102.211214直接变成浮点数
     vector<double> vTimestamps;
     string strFile = string(argv[3])+"/rgb.txt";
     LoadImages(strFile, vstrImageFilenames, vTimestamps);
@@ -61,6 +62,7 @@ int main(int argc, char **argv)
     cout << "Images in the sequence: " << nImages << endl << endl;
 
     // Main loop
+    //int8_t track_sleep_max_print_times = 0;
     cv::Mat im;
     for(int ni=0; ni<nImages; ni++)
     {
@@ -97,13 +99,32 @@ int main(int argc, char **argv)
         // Wait to load the next frame
         double T=0;
         if(ni<nImages-1)
+	    //以f1_xyz为例，第一帧就是T=1305031102.211214-1305031102.175304
             T = vTimestamps[ni+1]-tframe;
         else if(ni>0)
             T = tframe-vTimestamps[ni-1];
 
         if(ttrack<T)
+	{
+	    // test
+	    /*
+	    ++track_sleep_max_print_times;
+	    if(track_sleep_max_print_times < 10)
+	    {
+		cout << ni << "sleep time:" << (T-ttrack)*1e6 << endl;
+		cout << "T:" << T << " "<< "ttrack:" << ttrack << endl;
+	    }
+	    //防止tracktimes溢出
+	    else
+	    {
+		--track_sleep_max_print_times;
+	    }
+	    */
+	    
+	    //开头表示微妙，经打印数据发现其每帧造成的延时0.005s级
             usleep((T-ttrack)*1e6);
-    }
+	}
+    } //for end
 
     // Stop all threads
     SLAM.Shutdown();

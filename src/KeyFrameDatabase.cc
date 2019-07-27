@@ -30,6 +30,7 @@ using namespace std;
 namespace ORB_SLAM2
 {
 
+//注意mpVoc保存了词典树
 KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
     mpVoc(&voc)
 {
