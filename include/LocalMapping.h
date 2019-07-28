@@ -52,6 +52,7 @@ public:
     void InsertKeyFrame(KeyFrame* pKF);
 
     // Thread Synch
+    //多线程控制使用
     void RequestStop();
     void RequestReset();
     bool Stop();

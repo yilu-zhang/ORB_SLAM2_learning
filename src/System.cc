@@ -227,8 +227,10 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     }
 
     // Check mode change
+    //设置标志位
     {
         unique_lock<mutex> lock(mMutexMode);
+	//停止局部地图，只定位
         if(mbActivateLocalizationMode)
         {
             mpLocalMapper->RequestStop();
@@ -242,8 +244,10 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
             mpTracker->InformOnlyTracking(true);
             mbActivateLocalizationMode = false;
         }
+        //完整SLAM
         if(mbDeactivateLocalizationMode)
         {
+	    // 只改变mbOnlyTracking标志位
             mpTracker->InformOnlyTracking(false);
             mpLocalMapper->Release();
             mbDeactivateLocalizationMode = false;
@@ -251,6 +255,8 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     }
 
     // Check reset
+    // (tracking.cc/track)Reset if the camera get lost soon after initialization
+    //Viewer.cc/run
     {
     unique_lock<mutex> lock(mMutexReset);
     if(mbReset)
@@ -270,6 +276,7 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     return Tcw;
 }
 
+//以下两个函数都在viewerAR。cc和viewer.cc调用
 void System::ActivateLocalizationMode()
 {
     unique_lock<mutex> lock(mMutexMode);

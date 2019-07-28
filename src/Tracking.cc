@@ -244,6 +244,7 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
 {
     mImGray = im;
 
+    //转成灰度图
     if(mImGray.channels()==3)
     {
         if(mbRGB)

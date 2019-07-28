@@ -743,7 +743,7 @@ void LoopClosing::RunGlobalBundleAdjustment(unsigned long nLoopKF)
             cout << "Map updated!" << endl;
         }
 
-        mbFinishedGBA = true;
+	mbFinishedGBA = true;
         mbRunningGBA = false;
     }
 }

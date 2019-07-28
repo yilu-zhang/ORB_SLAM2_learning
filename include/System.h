@@ -80,6 +80,7 @@ public:
     // This stops local mapping thread (map building) and performs only camera tracking.
     void ActivateLocalizationMode();
     // This resumes local mapping thread and performs SLAM again.
+    //SLAM包括定位和建图2个过程
     void DeactivateLocalizationMode();
 
     // Returns true if there have been a big map change (loop closure, global BA)
