@@ -260,6 +260,7 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
             cvtColor(mImGray,mImGray,CV_BGRA2GRAY);
     }
 
+    //提取当前帧的特征
     if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET)
         mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
     else
@@ -398,6 +399,7 @@ void Tracking::Track()
             }
         }
 
+        //直接把当前帧作为参考帧
         mCurrentFrame.mpReferenceKF = mpReferenceKF;
 
         // If we have an initial estimation of the camera pose and matching. Track the local map.
@@ -577,6 +579,7 @@ void Tracking::MonocularInitialization()
             mInitialFrame = Frame(mCurrentFrame);
             mLastFrame = Frame(mCurrentFrame);
             mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
+	    //把初始化图片的特征点都作为mvbPrevMatched，方便查找匹配点
             for(size_t i=0; i<mCurrentFrame.mvKeysUn.size(); i++)
                 mvbPrevMatched[i]=mCurrentFrame.mvKeysUn[i].pt;
 
@@ -593,6 +596,7 @@ void Tracking::MonocularInitialization()
     else
     {
         // Try to initialize
+	//特征点大于100匹配点才可能大于100
         if((int)mCurrentFrame.mvKeys.size()<=100)
         {
             delete mpInitializer;

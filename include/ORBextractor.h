@@ -29,6 +29,7 @@
 namespace ORB_SLAM2
 {
 
+//分配四叉树用到的节点类型
 class ExtractorNode
 {
 public:
@@ -37,8 +38,10 @@ public:
     void DivideNode(ExtractorNode &n1, ExtractorNode &n2, ExtractorNode &n3, ExtractorNode &n4);
 
     std::vector<cv::KeyPoint> vKeys;
+    //UP LEFT
     cv::Point2i UL, UR, BL, BR;
     std::list<ExtractorNode>::iterator lit;
+    //表示只有一个特征了不能再切分了
     bool bNoMore;
 };
 
@@ -92,6 +95,7 @@ protected:
                                            const int &maxX, const int &minY, const int &maxY, const int &nFeatures, const int &level);
 
     void ComputeKeyPointsOld(std::vector<std::vector<cv::KeyPoint> >& allKeypoints);
+    //描述子坐标对
     std::vector<cv::Point> pattern;
 
     int nfeatures;
