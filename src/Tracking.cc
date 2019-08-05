@@ -617,6 +617,7 @@ void Tracking::MonocularInitialization()
             return;
         }
 
+        //计算位姿
         cv::Mat Rcw; // Current Camera Rotation
         cv::Mat tcw; // Current Camera Translation
         vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)

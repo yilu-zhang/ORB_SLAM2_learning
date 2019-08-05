@@ -50,6 +50,7 @@ class LocalMapping;
 class LoopClosing;
 class System;
 
+//整个运行过程只有一个类
 class Tracking
 {  
 
@@ -98,7 +99,9 @@ public:
 
     // Initialization Variables (Monocular)
     std::vector<int> mvIniLastMatches;
+    //两帧图像之间相互保存彼此匹配点索引，如vnMatches12[]，自身索引对应自身特征点，内容对应另一帧索引
     std::vector<int> mvIniMatches;
+    //把初始化图片的特征点都作为mvbPrevMatched，方便查找匹配点
     std::vector<cv::Point2f> mvbPrevMatched;
     std::vector<cv::Point3f> mvIniP3D;
     Frame mInitialFrame;

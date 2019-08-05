@@ -41,6 +41,7 @@ public:
     ORBmatcher(float nnratio=0.6, bool checkOri=true);
 
     // Computes the Hamming distance between two ORB descriptors
+    //不具备可移植性，更改描述子个数需要改代码
     static int DescriptorDistance(const cv::Mat &a, const cv::Mat &b);
 
     // Search matches between Frame keypoints and projected MapPoints. Returns number of matches
@@ -66,6 +67,7 @@ public:
     int SearchByBoW(KeyFrame *pKF1, KeyFrame* pKF2, std::vector<MapPoint*> &vpMatches12);
 
     // Matching for the Map Initialization (only used in the monocular case)
+    //返回匹配点数量，更新tracking类mvbPrevMatched、mvIniMatches
     int SearchForInitialization(Frame &F1, Frame &F2, std::vector<cv::Point2f> &vbPrevMatched, std::vector<int> &vnMatches12, int windowSize=10);
 
     // Matching to triangulate new MapPoints. Check Epipolar Constraint.
@@ -84,8 +86,11 @@ public:
 
 public:
 
+    //50
     static const int TH_LOW;
+    //100
     static const int TH_HIGH;
+    //30
     static const int HISTO_LENGTH;
 
 
@@ -95,6 +100,7 @@ protected:
 
     float RadiusByViewingCos(const float &viewCos);
 
+    //计算拥有最多数量相近变换角度的三个匹配点袋子，并将max2、max3与max1比较，小于1/10直接去掉
     void ComputeThreeMaxima(std::vector<int>* histo, const int L, int &ind1, int &ind2, int &ind3);
 
     float mfNNratio;

@@ -402,6 +402,7 @@ int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const vector<MapP
     return nmatches;
 }
 
+//命名中1表示上一帧，2表示当前帧
 int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f> &vbPrevMatched, vector<int> &vnMatches12, int windowSize)
 {
     int nmatches=0;
@@ -423,6 +424,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
         if(level1>0)
             continue;
 
+	//通过上一帧图像特征点位置推断其可能出现在当前帧位置
         vector<size_t> vIndices2 = F2.GetFeaturesInArea(vbPrevMatched[i1].x,vbPrevMatched[i1].y, windowSize,level1,level1);
 
         if(vIndices2.empty())
@@ -442,6 +444,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
 
             int dist = DescriptorDistance(d1,d2);
 
+	    //i1特征点是有重合的
             if(vMatchedDistance[i2]<=dist)
                 continue;
 
@@ -455,8 +458,9 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
             {
                 bestDist2=dist;
             }
-        }
+        }//i2 for end
 
+        //最小的距离
         if(bestDist<=TH_LOW)
         {
             if(bestDist<(float)bestDist2*mfNNratio)
@@ -471,6 +475,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
                 vMatchedDistance[bestIdx2]=bestDist;
                 nmatches++;
 
+		//检查两帧方向差是否在合理范围，所有匹配点的旋转角度应该是差不多的
                 if(mbCheckOrientation)
                 {
                     float rot = F1.mvKeysUn[i1].angle-F2.mvKeysUn[bestIdx2].angle;
@@ -485,7 +490,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
             }
         }
 
-    }
+    }//i1 for end
 
     if(mbCheckOrientation)
     {
@@ -499,6 +504,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
         {
             if(i==ind1 || i==ind2 || i==ind3)
                 continue;
+	    //将不在最多的几个袋子中的匹配点去掉
             for(size_t j=0, jend=rotHist[i].size(); j<jend; j++)
             {
                 int idx1 = rotHist[i][j];
@@ -513,6 +519,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
     }
 
     //Update prev matched
+    //每次跟踪上一帧到当前帧的匹配可以确定
     for(size_t i1=0, iend1=vnMatches12.size(); i1<iend1; i1++)
         if(vnMatches12[i1]>=0)
             vbPrevMatched[i1]=F2.mvKeysUn[vnMatches12[i1]].pt;
@@ -1631,6 +1638,7 @@ void ORBmatcher::ComputeThreeMaxima(vector<int>* histo, const int L, int &ind1, 
         }
     }
 
+    //少于最多点1/10将
     if(max2<0.1f*(float)max1)
     {
         ind2=-1;
@@ -1647,6 +1655,7 @@ void ORBmatcher::ComputeThreeMaxima(vector<int>* histo, const int L, int &ind1, 
 // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel
 int ORBmatcher::DescriptorDistance(const cv::Mat &a, const cv::Mat &b)
 {
+    //将指针换成32位整数型
     const int *pa = a.ptr<int32_t>();
     const int *pb = b.ptr<int32_t>();
 

@@ -90,6 +90,7 @@ private:
     float mSigma, mSigma2;
 
     // Ransac max iterations
+    // monocular:200
     int mMaxIterations;
 
     // Ransac sets

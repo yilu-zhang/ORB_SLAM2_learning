@@ -86,7 +86,8 @@ public:
     // Compute the cell of a keypoint (return false if outside the grid)
     bool PosInGrid(const cv::KeyPoint &kp, int &posX, int &posY);
 
-    //获得x，y匹配点存在的可能区域cell中存在的潜在匹配点数
+    //通过上一帧图像特征点位置推断其可能出现在当前帧位置
+    //使用mgrid获得x，y可能区域r中存在的潜在匹配点，返回的是所有可能匹配点（未计算汉明距离，只是通过区域查找，缩小范围）的索引
     vector<size_t> GetFeaturesInArea(const float &x, const float  &y, const float  &r, const int minLevel=-1, const int maxLevel=-1) const;
 
     // Search a match for each keypoint in the left image to a keypoint in the right image.
@@ -160,7 +161,7 @@ public:
     // Keypoints are assigned to cells in a grid to reduce matching complexity when projecting MapPoints.
     static float mfGridElementWidthInv;
     static float mfGridElementHeightInv;
-    //将图片分成64*48的网格
+    //将图片分成64*48的网格,其内容是对应包含的特征点序号
     std::vector<std::size_t> mGrid[FRAME_GRID_COLS][FRAME_GRID_ROWS];
 
     // Camera pose.

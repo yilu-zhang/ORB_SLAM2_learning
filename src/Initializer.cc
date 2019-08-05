@@ -50,9 +50,11 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
 
     mvMatches12.clear();
     mvMatches12.reserve(mvKeys2.size());
+    //参考帧有匹配点的为true
     mvbMatched1.resize(mvKeys1.size());
     for(size_t i=0, iend=vMatches12.size();i<iend; i++)
     {
+	//初值为-1,>0表示有匹配点
         if(vMatches12[i]>=0)
         {
             mvMatches12.push_back(make_pair(i,vMatches12[i]));
@@ -91,6 +93,7 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
 
             mvSets[it][j] = idx;
 
+	    //移除被选过的点，保证被选的八个点不一样
             vAvailableIndices[randi] = vAvailableIndices.back();
             vAvailableIndices.pop_back();
         }
