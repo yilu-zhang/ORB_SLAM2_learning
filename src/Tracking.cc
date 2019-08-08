@@ -399,7 +399,6 @@ void Tracking::Track()
             }
         }
 
-        //直接把当前帧作为参考帧
         mCurrentFrame.mpReferenceKF = mpReferenceKF;
 
         // If we have an initial estimation of the camera pose and matching. Track the local map.
@@ -634,6 +633,7 @@ void Tracking::MonocularInitialization()
             }
 
             // Set Frame Poses
+            //初始帧位姿为单位矩阵
             mInitialFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
             cv::Mat Tcw = cv::Mat::eye(4,4,CV_32F);
             Rcw.copyTo(Tcw.rowRange(0,3).colRange(0,3));
@@ -783,6 +783,7 @@ bool Tracking::TrackReferenceKeyFrame()
     mCurrentFrame.mvpMapPoints = vpMapPointMatches;
     mCurrentFrame.SetPose(mLastFrame.mTcw);
 
+    //直接用g2o优化来计算位姿
     Optimizer::PoseOptimization(&mCurrentFrame);
 
     // Discard outliers

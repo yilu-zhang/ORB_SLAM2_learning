@@ -46,6 +46,7 @@ public:
 
 private:
 
+    //计算单应矩阵分数，并改变第一个参数标出局内外点，计算出得分最高的一组H
     void FindHomography(vector<bool> &vbMatchesInliers, float &score, cv::Mat &H21);
     void FindFundamental(vector<bool> &vbInliers, float &score, cv::Mat &F21);
 
@@ -59,11 +60,13 @@ private:
     bool ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv::Mat &K,
                       cv::Mat &R21, cv::Mat &t21, vector<cv::Point3f> &vP3D, vector<bool> &vbTriangulated, float minParallax, int minTriangulated);
 
+    //包括H矩阵分解
     bool ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv::Mat &K,
                       cv::Mat &R21, cv::Mat &t21, vector<cv::Point3f> &vP3D, vector<bool> &vbTriangulated, float minParallax, int minTriangulated);
 
     void Triangulate(const cv::KeyPoint &kp1, const cv::KeyPoint &kp2, const cv::Mat &P1, const cv::Mat &P2, cv::Mat &x3D);
 
+    //第二个参数是去中心化、归一化后2D坐标，第三个参数是相应变换矩阵
     void Normalize(const vector<cv::KeyPoint> &vKeys, vector<cv::Point2f> &vNormalizedPoints, cv::Mat &T);
 
     int CheckRT(const cv::Mat &R, const cv::Mat &t, const vector<cv::KeyPoint> &vKeys1, const vector<cv::KeyPoint> &vKeys2,

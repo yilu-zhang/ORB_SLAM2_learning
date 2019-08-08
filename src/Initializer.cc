@@ -131,6 +131,7 @@ void Initializer::FindHomography(vector<bool> &vbMatchesInliers, float &score, c
 
     // Normalize coordinates
     vector<cv::Point2f> vPn1, vPn2;
+    //normalize matrix
     cv::Mat T1, T2;
     Normalize(mvKeys1,vPn1, T1);
     Normalize(mvKeys2,vPn2, T2);
@@ -159,12 +160,15 @@ void Initializer::FindHomography(vector<bool> &vbMatchesInliers, float &score, c
             vPn2i[j] = vPn2[mvMatches12[idx].second];
         }
 
+        //计算当前组H
         cv::Mat Hn = ComputeH21(vPn1i,vPn2i);
         H21i = T2inv*Hn*T1;
         H12i = H21i.inv();
 
+	//通过当前组H计算所有点分数，局外点不参与分数计算
         currentScore = CheckHomography(H21i, H12i, vbCurrentInliers, mSigma);
 
+	//选择分数最高的一组
         if(currentScore>score)
         {
             H21 = H21i.clone();
