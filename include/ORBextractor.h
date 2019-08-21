@@ -45,6 +45,7 @@ public:
     bool bNoMore;
 };
 
+//在tracking类中创建实例
 class ORBextractor
 {
 public:

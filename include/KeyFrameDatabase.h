@@ -38,7 +38,7 @@ namespace ORB_SLAM2
 class KeyFrame;
 class Frame;
 
-
+//只是简单保存关键帧
 class KeyFrameDatabase
 {
 public:

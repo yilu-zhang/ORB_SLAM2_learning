@@ -33,6 +33,7 @@ using namespace std;
 void LoadImages(const string &strFile, vector<string> &vstrImageFilenames,
                 vector<double> &vTimestamps);
 
+//arg[1]-词袋文件夹名 argv[2]-参数文件名 argv[3]-数据集文件名
 int main(int argc, char **argv)
 {
     if(argc != 4)
@@ -42,12 +43,17 @@ int main(int argc, char **argv)
     }
 
     // Retrieve paths to images
+    //图片文件名，如rgb/1305031102.175304.png
     vector<string> vstrImageFilenames;
     //字符.直接转换成小数点，如1305031102.211214直接变成浮点数
     vector<double> vTimestamps;
     string strFile = string(argv[3])+"/rgb.txt";
     LoadImages(strFile, vstrImageFilenames, vTimestamps);
+    
+    int ahead_of_time_process_image=0;
+    double ahead_of_time_process_image_ratio;
 
+    //图片数量
     int nImages = vstrImageFilenames.size();
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
@@ -68,6 +74,7 @@ int main(int argc, char **argv)
     {
         // Read image from file
         im = cv::imread(string(argv[3])+"/"+vstrImageFilenames[ni],CV_LOAD_IMAGE_UNCHANGED);
+	//当前帧时间
         double tframe = vTimestamps[ni];
 
         if(im.empty())
@@ -105,6 +112,7 @@ int main(int argc, char **argv)
         else if(ni>0)
             T = tframe-vTimestamps[ni-1];
 
+	//模拟
         if(ttrack<T)
 	{
 	    // test
@@ -121,12 +129,17 @@ int main(int argc, char **argv)
 		--track_sleep_max_print_times;
 	    }
 	    */
-	    
+	    ahead_of_time_process_image++;
 	    //开头表示微妙，经打印数据发现其每帧造成的延时0.005s级
             usleep((T-ttrack)*1e6);
 	}
     } //for end
 
+    //打印比帧率提前处理完的帧
+    ahead_of_time_process_image_ratio = (double)ahead_of_time_process_image/nImages;
+    cout<<"ahead_of_time_process_image:"<<ahead_of_time_process_image<<endl;
+    cout<<"ahead_of_time_process_image_ratio:"<< ahead_of_time_process_image_ratio <<endl;
+    
     // Stop all threads
     SLAM.Shutdown();
 

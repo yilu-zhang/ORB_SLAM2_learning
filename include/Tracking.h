@@ -55,6 +55,7 @@ class Tracking
 {  
 
 public:
+    //加载参数文件yaml参数
     Tracking(System* pSys, ORBVocabulary* pVoc, FrameDrawer* pFrameDrawer, MapDrawer* pMapDrawer, Map* pMap,
              KeyFrameDatabase* pKFDB, const string &strSettingPath, const int sensor);
 
@@ -157,7 +158,7 @@ protected:
     LocalMapping* mpLocalMapper;
     LoopClosing* mpLoopClosing;
 
-    //ORB
+    //ORB，单目用mpIniORBextractor，2×nFeatures个特征，提高均匀性和匹配表现
     ORBextractor* mpORBextractorLeft, *mpORBextractorRight;
     ORBextractor* mpIniORBextractor;
 
@@ -185,12 +186,17 @@ protected:
     Map* mpMap;
 
     //Calibration matrix
+    //内参数矩阵K
     cv::Mat mK;
+    //畸变参数
     cv::Mat mDistCoef;
+    //没见设置文件有？
     float mbf;
 
     //New KeyFrame rules (according to fps)
+    //0
     int mMinFrames;
+    //等于帧率
     int mMaxFrames;
 
     // Threshold close/far points

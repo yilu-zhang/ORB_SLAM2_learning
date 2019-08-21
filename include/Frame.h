@@ -210,7 +210,7 @@ private:
     cv::Mat mRcw;
     cv::Mat mtcw;
     cv::Mat mRwc;
-    cv::Mat mOw; //==mtwc
+    cv::Mat mOw; //==mtwc,centor of camera
 };
 
 }// namespace ORB_SLAM
