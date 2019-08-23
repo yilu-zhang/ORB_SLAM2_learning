@@ -176,7 +176,7 @@ Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extra
      mTimeStamp(timeStamp), mK(K.clone()),mDistCoef(distCoef.clone()), mbf(bf), mThDepth(thDepth)
 {
     // Frame ID
-    mnId=nNextId++;
+    mnId=nNextId++;  //mnId=nNextId;nNextId++
 
     // Scale Level Info
     mnScaleLevels = mpORBextractorLeft->GetLevels();

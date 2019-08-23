@@ -96,17 +96,19 @@ protected:
                                            const int &maxX, const int &minY, const int &maxY, const int &nFeatures, const int &level);
 
     void ComputeKeyPointsOld(std::vector<std::vector<cv::KeyPoint> >& allKeypoints);
-    //描述子坐标对
+    //描述子512个点的坐标，依次组成256对
     std::vector<cv::Point> pattern;
 
-    int nfeatures;
-    double scaleFactor;
-    int nlevels;
-    int iniThFAST;
-    int minThFAST;
+    int nfeatures;//1000
+    double scaleFactor;//1.2
+    int nlevels;//8
+    int iniThFAST;//20
+    int minThFAST;//7
 
+    //金字塔每层的特征数，其总和大于等于nfeature，不会大太多。level0特征最多
     std::vector<int> mnFeaturesPerLevel;
 
+    //其索引对应v(0-15),值对应u轴，两个组成半径为15的圆
     std::vector<int> umax;
 
     std::vector<float> mvScaleFactor;

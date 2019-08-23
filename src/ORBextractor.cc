@@ -68,10 +68,9 @@ using namespace std;
 
 namespace ORB_SLAM2
 {
-
-const int PATCH_SIZE = 31;
-const int HALF_PATCH_SIZE = 15;
-const int EDGE_THRESHOLD = 19;
+const int PATCH_SIZE = 31;  //31
+const int HALF_PATCH_SIZE = 15;  //15
+const int EDGE_THRESHOLD = 19;	//19
 
 
 //计算关键点方向
@@ -1156,6 +1155,9 @@ void ORBextractor::ComputePyramid(cv::Mat image)
             resize(mvImagePyramid[level-1], mvImagePyramid[level], sz, 0, 0, INTER_LINEAR);
 
 	    //扩充图像边缘，有啥用呢？
+	    //When the source image is a part (ROI) of a bigger image, the function will try to use the
+            //pixels outside of the ROI to form a border. To disable this feature and always do extrapolation, as
+            //if src was not a ROI, use borderType | BORDER_ISOLATED.
             copyMakeBorder(mvImagePyramid[level], temp, EDGE_THRESHOLD, EDGE_THRESHOLD, EDGE_THRESHOLD, EDGE_THRESHOLD,
                            BORDER_REFLECT_101+BORDER_ISOLATED);            
         }

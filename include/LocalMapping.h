@@ -53,7 +53,9 @@ public:
 
     // Thread Synch
     //多线程控制使用
+    //mbStopRequested = true;mbAbortBA = true;
     void RequestStop();
+    //mbResetRequested = true;
     void RequestReset();
     bool Stop();
     void Release();

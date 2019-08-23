@@ -62,6 +62,7 @@ public:
     // Preprocess the input and call Track(). Extract features and performs stereo matching.
     cv::Mat GrabImageStereo(const cv::Mat &imRectLeft,const cv::Mat &imRectRight, const double &timestamp);
     cv::Mat GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const double &timestamp);
+    //跟踪线程主要部分
     cv::Mat GrabImageMonocular(const cv::Mat &im, const double &timestamp);
 
     void SetLocalMapper(LocalMapping* pLocalMapper);
@@ -74,6 +75,7 @@ public:
     void ChangeCalibration(const string &strSettingPath);
 
     // Use this function if you have deactivated local mapping and you only want to localize the camera.
+    //mbOnlyTracking=flag
     void InformOnlyTracking(const bool &flag);
 
 
@@ -158,9 +160,9 @@ protected:
     LocalMapping* mpLocalMapper;
     LoopClosing* mpLoopClosing;
 
-    //ORB，单目用mpIniORBextractor，2×nFeatures个特征，提高均匀性和匹配表现
+    //单目用left，nfeature=1000
     ORBextractor* mpORBextractorLeft, *mpORBextractorRight;
-    ORBextractor* mpIniORBextractor;
+    ORBextractor* mpIniORBextractor; //Initalization 2000
 
     //BoW
     ORBVocabulary* mpORBVocabulary;
