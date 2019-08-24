@@ -46,6 +46,7 @@ public:
     Frame();
 
     // Copy constructor.
+    //通过过赋值新建一个Frame实例
     Frame(const Frame &frame);
 
     // Constructor for stereo cameras.
@@ -137,6 +138,7 @@ public:
     // Vector of keypoints (original for visualization) and undistorted (actually used by the system).
     // In the stereo case, mvKeysUn is redundant as images must be rectified.
     // In the RGB-D case, RGB images can be distorted.
+    //[0]-levels,[1]-keypoint.
     std::vector<cv::KeyPoint> mvKeys, mvKeysRight;
     //Vector of undistorted keypoints 
     std::vector<cv::KeyPoint> mvKeysUn;
@@ -162,7 +164,7 @@ public:
     // Keypoints are assigned to cells in a grid to reduce matching complexity when projecting MapPoints.
     static float mfGridElementWidthInv;
     static float mfGridElementHeightInv;
-    //将图片分成64*48的网格,其内容是对应包含的特征点序号
+    //将图片分成64*48的网格,其内容是对应包含的特征点索引
     std::vector<std::size_t> mGrid[FRAME_GRID_COLS][FRAME_GRID_ROWS];
 
     // Camera pose.
@@ -201,10 +203,11 @@ private:
     void UndistortKeyPoints();
 
     // Computes image bounds for the undistorted image (called in the constructor).
+    //校正四个顶点坐标
     void ComputeImageBounds(const cv::Mat &imLeft);
 
     // Assign keypoints to the grid for speed up feature matching (called in the constructor).
-    //将关键点放入64*48的网格中
+    //将关键点放入64*48的网格中，将结果存入mGrid，内容为特征点对应下标
     void AssignFeaturesToGrid();
 
     // Rotation, translation and camera center

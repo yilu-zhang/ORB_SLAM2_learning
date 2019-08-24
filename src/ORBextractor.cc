@@ -70,7 +70,7 @@ namespace ORB_SLAM2
 {
 const int PATCH_SIZE = 31;  //31
 const int HALF_PATCH_SIZE = 15;  //15
-const int EDGE_THRESHOLD = 19;	//19
+const int EDGE_THRESHOLD = 19;	//19,edge padding
 
 
 //计算关键点方向
@@ -85,7 +85,7 @@ static float IC_Angle(const Mat& image, Point2f pt,  const vector<int> & u_max)
         m_10 += u * center[u];
 
     // Go line by line in the circuI853lar patch
-    int step = (int)image.step1();
+    int step = (int)image.step1(); //cols
     for (int v = 1; v <= HALF_PATCH_SIZE; ++v)
     {
         // Proceed over the two lines
@@ -563,6 +563,7 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
     vector<ExtractorNode*> vpIniNodes;
     vpIniNodes.resize(nIni);
 
+    //计算方框的四个顶点
     for(int i=0; i<nIni; i++)
     {
         ExtractorNode ni;
@@ -616,10 +617,12 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
 
         lit = lNodes.begin();
 
+	//一次完整的分割增加的结点
         int nToExpand = 0;
 
         vSizeAndPointerToNode.clear();
 
+	//进行依次完整的分割
         while(lit!=lNodes.end())
         {
             if(lit->bNoMore)
@@ -644,7 +647,8 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
                     {
                         nToExpand++;
                         vSizeAndPointerToNode.push_back(make_pair(n1.vKeys.size(),&lNodes.front()));
-                        lNodes.front().lit = lNodes.begin();
+			//这个lit和局部变量lit不一样
+                        lNodes.front().lit = lNodes.begin();  
                     }
                 }
                 if(n2.vKeys.size()>0)
@@ -681,7 +685,7 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
                 lit=lNodes.erase(lit);
                 continue;
             }
-        }       
+        } //internal while end
 
         // Finish if there are more nodes than required features
         // or all nodes contain just one point
@@ -689,6 +693,8 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
         {
             bFinish = true;
         }
+        //拓展的结点分别再拓展一次就满足要求了（4-1），拓展一次增加四个结点，删除一个结点
+        //这时从特征点最多的开始分就比较快
         else if(((int)lNodes.size()+nToExpand*3)>N)
         {
 
@@ -755,7 +761,7 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
 
             }
         }
-    }
+    }//outer while end
 
     // Retain the best point in each node
     vector<cv::KeyPoint> vResultKeys;
@@ -786,6 +792,7 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
 {
     allKeypoints.resize(nlevels);
 
+    //将图片分成30*30来提取角点，主要是为了选择合适的阈值20或7,也使分布更均匀
     const float W = 30;
 
     for (int level = 0; level < nlevels; ++level)
@@ -795,7 +802,7 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
         const int maxBorderX = mvImagePyramid[level].cols-EDGE_THRESHOLD+3;
         const int maxBorderY = mvImagePyramid[level].rows-EDGE_THRESHOLD+3;
 
-	//分配足够多内存给特征点
+	//分配足够多内存给特征点，当前层的特征点
         vector<cv::KeyPoint> vToDistributeKeys;
         vToDistributeKeys.reserve(nfeatures*10);
 
@@ -808,9 +815,10 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
         const int hCell = ceil(height/nRows);
 
 	//使用w*w的框在图片层移动，提取fast关键点
+	//X-COLS-WIDTH，Y-ROWS-HEIGHT
         for(int i=0; i<nRows; i++)
         {
-	    //+6为了检测边缘点角点
+	    //+6为了检测边缘点角点,圆的半径为3
             const float iniY =minBorderY+i*hCell;
             float maxY = iniY+hCell+6;
 
@@ -851,7 +859,7 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
                 }
 
             }
-        }
+        }//process one levels
 
         //这里是引用，两个变量指向同一个内存
         vector<KeyPoint> & keypoints = allKeypoints[level];
@@ -871,7 +879,7 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
             keypoints[i].octave=level;
             keypoints[i].size = scaledPatchSize;
         }
-    }
+    }//proces all levels
 
     // compute orientations
     for (int level = 0; level < nlevels; ++level)
@@ -1081,6 +1089,7 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
     ComputePyramid(image);
 
     //提取各金字塔层的关键点及其方向，结果存在allKeypoints中，第一维是level，第二维是相应关键点
+    //坐标为在各层自己尺度下坐标
     vector < vector<KeyPoint> > allKeypoints;
     ComputeKeyPointsOctTree(allKeypoints);
     //ComputeKeyPointsOld(allKeypoints);
@@ -1091,6 +1100,7 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
     int nkeypoints = 0;
     for (int level = 0; level < nlevels; ++level)
         nkeypoints += (int)allKeypoints[level].size();
+    
     if( nkeypoints == 0 )
         _descriptors.release();
     else
@@ -1123,6 +1133,7 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
         offset += nkeypointsLevel;
 
         // Scale keypoint coordinates
+	//缩小之后应该将其坐标尺寸放大，这样就可以直接等同计算了
         if (level != 0)
         {
             float scale = mvScaleFactor[level]; //getScale(level, firstLevel, scaleFactor);

@@ -30,11 +30,13 @@ namespace ORB_SLAM2
 {
 
 //分配四叉树用到的节点类型
+//正方形或长方形区域，将图片以y（竖向）为边长分成正方形，在DistributeOctTree中用
 class ExtractorNode
 {
 public:
     ExtractorNode():bNoMore(false){}
 
+    //将node分为四个部分，可以是长方形也可以是正方形
     void DivideNode(ExtractorNode &n1, ExtractorNode &n2, ExtractorNode &n3, ExtractorNode &n4);
 
     std::vector<cv::KeyPoint> vKeys;
@@ -90,8 +92,11 @@ public:
 
 protected:
 
+    //将图片使用双线性内插缩小保存在mvImagePyramid[level]，并将边缘扩充EDGE-THRESHOLD
     void ComputePyramid(cv::Mat image);
-    void ComputeKeyPointsOctTree(std::vector<std::vector<cv::KeyPoint> >& allKeypoints);    
+    //提取各金字塔层的关键点及其方向，结果存在allKeypoints中，第一维是level，第二维是相应关键点
+    void ComputeKeyPointsOctTree(std::vector<std::vector<cv::KeyPoint> >& allKeypoints);
+    //在所有层总共取nfeature个特征，分别在各层使用四叉树来使特征点均匀分布，取一个区域最大响应的特征点
     std::vector<cv::KeyPoint> DistributeOctTree(const std::vector<cv::KeyPoint>& vToDistributeKeys, const int &minX,
                                            const int &maxX, const int &minY, const int &maxY, const int &nFeatures, const int &level);
 
@@ -102,19 +107,20 @@ protected:
     int nfeatures;//1000
     double scaleFactor;//1.2
     int nlevels;//8
+    //中心点像素值与圆上点差值，主要用20，没提取到特征点才用7
     int iniThFAST;//20
     int minThFAST;//7
 
     //金字塔每层的特征数，其总和大于等于nfeature，不会大太多。level0特征最多
     std::vector<int> mnFeaturesPerLevel;
 
-    //其索引对应v(0-15),值对应u轴，两个组成半径为15的圆
+    //其索引对应v(0-15),值对应u轴，两个组成半径为15的圆,计算方向时用
     std::vector<int> umax;
 
-    std::vector<float> mvScaleFactor;
-    std::vector<float> mvInvScaleFactor;    
-    std::vector<float> mvLevelSigma2;
-    std::vector<float> mvInvLevelSigma2;
+    std::vector<float> mvScaleFactor; //1.2
+    std::vector<float> mvInvScaleFactor;  //1/1.2  
+    std::vector<float> mvLevelSigma2; //1.2*1.2
+    std::vector<float> mvInvLevelSigma2; //1/(1.2*1.2)
 };
 
 } //namespace ORB_SLAM
