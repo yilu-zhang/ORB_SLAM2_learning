@@ -64,6 +64,7 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
             mvbMatched1[i]=false;
     }
 
+    //匹配点数
     const int N = mvMatches12.size();
 
     // Indices for minimum set selection
@@ -128,6 +129,7 @@ void Initializer::FindHomography(vector<bool> &vbMatchesInliers, float &score, c
 {
     // Number of putative matches
     const int N = mvMatches12.size();
+    //cout<<"test_FindHomography_N:"<<N<<endl;
 
     // Normalize coordinates
     vector<cv::Point2f> vPn1, vPn2;
@@ -182,7 +184,10 @@ void Initializer::FindHomography(vector<bool> &vbMatchesInliers, float &score, c
 void Initializer::FindFundamental(vector<bool> &vbMatchesInliers, float &score, cv::Mat &F21)
 {
     // Number of putative matches
-    const int N = vbMatchesInliers.size();
+    //const int N = vbMatchesInliers.size();//bug
+    
+    const int N = mvMatches12.size();
+    //cout<<"test_FindFundamental_N:"<<N<<endl;
 
     // Normalize coordinates
     vector<cv::Point2f> vPn1, vPn2;
@@ -215,7 +220,8 @@ void Initializer::FindFundamental(vector<bool> &vbMatchesInliers, float &score, 
         }
 
         cv::Mat Fn = ComputeF21(vPn1i,vPn2i);
-
+	
+	//(T2×mvKeys2)t*Fn*(T1*mvKeys1)=0
         F21i = T2t*Fn*T1;
 
         currentScore = CheckFundamental(F21i, vbCurrentInliers, mSigma);
@@ -274,7 +280,7 @@ cv::Mat Initializer::ComputeH21(const vector<cv::Point2f> &vP1, const vector<cv:
 
 cv::Mat Initializer::ComputeF21(const vector<cv::Point2f> &vP1,const vector<cv::Point2f> &vP2)
 {
-    const int N = vP1.size();
+    const int N = vP1.size();//8
 
     cv::Mat A(N,9,CV_32F);
 
@@ -299,7 +305,8 @@ cv::Mat Initializer::ComputeF21(const vector<cv::Point2f> &vP1,const vector<cv::
     cv::Mat u,w,vt;
 
     cv::SVDecomp(A,w,u,vt,cv::SVD::MODIFY_A | cv::SVD::FULL_UV);
-
+    
+    //SVD分解后，奇异值已按从大到小排列，取最后一行
     cv::Mat Fpre = vt.row(8).reshape(0, 3);
 
     cv::SVDecomp(Fpre,w,u,vt,cv::SVD::MODIFY_A | cv::SVD::FULL_UV);

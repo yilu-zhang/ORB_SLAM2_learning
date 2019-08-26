@@ -595,6 +595,7 @@ void Tracking::MonocularInitialization()
     else
     {
         // Try to initialize
+	//初始化时特征点为200
 	//特征点大于100匹配点才可能大于100
         if((int)mCurrentFrame.mvKeys.size()<=100)
         {

@@ -408,7 +408,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
     int nmatches=0;
     vnMatches12 = vector<int>(F1.mvKeysUn.size(),-1);
 
-    vector<int> rotHist[HISTO_LENGTH];
+    vector<int> rotHist[HISTO_LENGTH];//30
     for(int i=0;i<HISTO_LENGTH;i++)
         rotHist[i].reserve(500);
     const float factor = 1.0f/HISTO_LENGTH;
@@ -433,8 +433,9 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
         cv::Mat d1 = F1.mDescriptors.row(i1);
 
         int bestDist = INT_MAX;
+	int bestIdx2 = -1;
+	
         int bestDist2 = INT_MAX;
-        int bestIdx2 = -1;
 
         for(vector<size_t>::iterator vit=vIndices2.begin(); vit!=vIndices2.end(); vit++)
         {
@@ -465,11 +466,13 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
         {
             if(bestDist<(float)bestDist2*mfNNratio)
             {
+		//当前帧该点已有和1匹配的点，说明是第二次匹配，是误匹配
                 if(vnMatches21[bestIdx2]>=0)
                 {
                     vnMatches12[vnMatches21[bestIdx2]]=-1;
                     nmatches--;
                 }
+                
                 vnMatches12[i1]=bestIdx2;
                 vnMatches21[bestIdx2]=i1;
                 vMatchedDistance[bestIdx2]=bestDist;

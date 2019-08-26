@@ -360,6 +360,7 @@ vector<size_t> Frame:: GetFeaturesInArea(const float &x, const float  &y, const 
 
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
             {
+		//检查特征所在图像金字塔层是否满足要求
                 const cv::KeyPoint &kpUn = mvKeysUn[vCell[j]];
                 if(bCheckLevels)
                 {

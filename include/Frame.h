@@ -207,7 +207,7 @@ private:
     void ComputeImageBounds(const cv::Mat &imLeft);
 
     // Assign keypoints to the grid for speed up feature matching (called in the constructor).
-    //将关键点放入64*48的网格中，将结果存入mGrid，内容为特征点对应下标
+    //将关键点放入64*48的网格中，将结果存入mGrid，内容为特征点对应下标,特征匹配时可以只找最有可能的框
     void AssignFeaturesToGrid();
 
     // Rotation, translation and camera center

@@ -102,9 +102,9 @@ public:
 
     // Initialization Variables (Monocular)
     std::vector<int> mvIniLastMatches;
-    //两帧图像之间相互保存彼此匹配点索引，如vnMatches12[]，自身索引对应自身特征点，内容对应另一帧索引
+    //保存参考帧匹配点对，vnMatches12[]，索引为参考帧特征点索引，内容对应当前帧匹配点索引，-1表示没有匹配
     std::vector<int> mvIniMatches;
-    //把初始化图片的特征点都作为mvbPrevMatched，方便查找匹配点
+    //之前匹配点的坐标。索引为参考帧特征的索引，内容为匹配到的当前帧特征点坐标。把初始化图片的特征点都作为mvbPrevMatched，方便查找匹配点
     std::vector<cv::Point2f> mvbPrevMatched;
     std::vector<cv::Point3f> mvIniP3D;
     Frame mInitialFrame;

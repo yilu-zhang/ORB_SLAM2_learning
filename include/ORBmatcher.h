@@ -41,6 +41,7 @@ public:
     ORBmatcher(float nnratio=0.6, bool checkOri=true);
 
     // Computes the Hamming distance between two ORB descriptors
+    //汉明距离越小越好
     //不具备可移植性，更改描述子个数需要改代码
     static int DescriptorDistance(const cv::Mat &a, const cv::Mat &b);
 
@@ -67,7 +68,9 @@ public:
     int SearchByBoW(KeyFrame *pKF1, KeyFrame* pKF2, std::vector<MapPoint*> &vpMatches12);
 
     // Matching for the Map Initialization (only used in the monocular case)
-    //返回匹配点数量，更新tracking类mvbPrevMatched、mvIniMatches
+    //返回匹配点数量，更新tracking类mvbPrevMatched、mvIniMatches,init windowsize=100，其在
+    //改变vector<int> &vnMatches12,索引为第一帧的特征点索引，内容为第二帧的特征点索引
+    //改变vector<cv::Point2f> &vbPrevMatched，索引为第一帧的特征点索引，内容为第二帧的特征点坐标
     int SearchForInitialization(Frame &F1, Frame &F2, std::vector<cv::Point2f> &vbPrevMatched, std::vector<int> &vnMatches12, int windowSize=10);
 
     // Matching to triangulate new MapPoints. Check Epipolar Constraint.
@@ -86,11 +89,11 @@ public:
 
 public:
 
-    //50
+    //50，满足匹配要求的最小汉明距离最大阈值
     static const int TH_LOW;
-    //100
+    //100，满足匹配要求的最大汉明距离最大阈值
     static const int TH_HIGH;
-    //30
+    //30，方向检测词袋个数
     static const int HISTO_LENGTH;
 
 
@@ -103,7 +106,7 @@ protected:
     //计算拥有最多数量相近变换角度的三个匹配点袋子，并将max2、max3与max1比较，小于1/10直接去掉
     void ComputeThreeMaxima(std::vector<int>* histo, const int L, int &ind1, int &ind2, int &ind3);
 
-    float mfNNratio;
+    float mfNNratio;//init-0.9,default-0.6
     bool mbCheckOrientation;
 };
 
