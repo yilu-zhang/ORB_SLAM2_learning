@@ -47,7 +47,7 @@ public:
 
     // Pose functions
     void SetPose(const cv::Mat &Tcw);
-    cv::Mat GetPose();
+    cv::Mat GetPose();//Tcw
     cv::Mat GetPoseInverse();
     cv::Mat GetCameraCenter();
     cv::Mat GetStereoCenter();
@@ -55,11 +55,13 @@ public:
     cv::Mat GetTranslation();
 
     // Bag of Words Representation
+    //计算mBowVec、mFeatVec
     void ComputeBoW();
 
     // Covisibility graph functions
     void AddConnection(KeyFrame* pKF, const int &weight);
     void EraseConnection(KeyFrame* pKF);
+    //更新Covisibility graph and span tree
     void UpdateConnections();
     void UpdateBestCovisibles();
     std::set<KeyFrame *> GetConnectedKeyFrames();
@@ -167,7 +169,9 @@ public:
     const cv::Mat mDescriptors;
 
     //BoW
+    //图片的表示向量
     DBoW2::BowVector mBowVec;
+    //direct index，图片在第4层结点对应特征序号
     DBoW2::FeatureVector mFeatVec;
 
     // Pose relative to parent (this is computed when bad flag is activated)
@@ -200,6 +204,7 @@ protected:
     cv::Mat Cw; // Stereo middel point. Only for visualization
 
     // MapPoints associated to keypoints
+    //与特征点下标一样，当前帧看到的路标点
     std::vector<MapPoint*> mvpMapPoints;
 
     // BoW
@@ -209,13 +214,19 @@ protected:
     // Grid over the image to speed up feature matching
     std::vector< std::vector <std::vector<size_t> > > mGrid;
 
+    //关键帧与其他所有帧的连接数
     std::map<KeyFrame*,int> mConnectedKeyFrameWeights;
+    //保存共视点大于15的帧，从大到小排列
     std::vector<KeyFrame*> mvpOrderedConnectedKeyFrames;
+    //保存共视点大于15的权重，从大到小排列
     std::vector<int> mvOrderedWeights;
 
     // Spanning Tree and Loop Edges
+    //在UpdateConnections中只设置一次
     bool mbFirstConnection;
+    //将与当前帧连接权重最大的作为其父连接帧，新来的肯定后看到
     KeyFrame* mpParent;
+    //与之相连最多的子连接帧
     std::set<KeyFrame*> mspChildrens;
     std::set<KeyFrame*> mspLoopEdges;
 

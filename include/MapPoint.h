@@ -70,10 +70,12 @@ public:
         return mnFound;
     }
 
+    // Take the descriptor with least median distance to the rest
     void ComputeDistinctiveDescriptors();
 
     cv::Mat GetDescriptor();
 
+    //更新平均长度和dmax、dmin
     void UpdateNormalAndDepth();
 
     float GetMinDistanceInvariance();
@@ -127,6 +129,7 @@ protected:
      cv::Mat mDescriptor;
 
      // Reference KeyFrame
+     //用于计算能观测的最大最小距离，随着运动不断更新
      KeyFrame* mpRefKF;
 
      // Tracking counters
@@ -138,8 +141,8 @@ protected:
      MapPoint* mpReplaced;
 
      // Scale invariance distances
-     float mfMinDistance;
-     float mfMaxDistance;
+     float mfMinDistance;//mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors[nLevels-1]
+     float mfMaxDistance;//mfMaxDistance = dist*levelScaleFactor;
 
      Map* mpMap;
 

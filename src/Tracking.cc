@@ -592,6 +592,7 @@ void Tracking::MonocularInitialization()
             return;
         }
     }
+    //第二帧
     else
     {
         // Try to initialize
@@ -620,12 +621,14 @@ void Tracking::MonocularInitialization()
         //计算位姿
         cv::Mat Rcw; // Current Camera Rotation
         cv::Mat tcw; // Current Camera Translation
+        //正确三角化的匹配点为ture
         vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
         if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
         {
             for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
             {
+		//把未正确三角化的匹配点去除
                 if(mvIniMatches[i]>=0 && !vbTriangulated[i])
                 {
                     mvIniMatches[i]=-1;

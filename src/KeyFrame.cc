@@ -345,6 +345,7 @@ void KeyFrame::UpdateConnections()
         }
     }
 
+    //没有大于15的将最大的帧连接
     if(vPairs.empty())
     {
         vPairs.push_back(make_pair(nmax,pKFmax));
@@ -356,6 +357,7 @@ void KeyFrame::UpdateConnections()
     list<int> lWs;
     for(size_t i=0; i<vPairs.size();i++)
     {
+	//从大到小排列
         lKFs.push_front(vPairs[i].second);
         lWs.push_front(vPairs[i].first);
     }

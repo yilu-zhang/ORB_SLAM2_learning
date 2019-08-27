@@ -503,6 +503,7 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
     // Reconstruct with the 4 hyphoteses and check
     vector<cv::Point3f> vP3D1, vP3D2, vP3D3, vP3D4;
     vector<bool> vbTriangulated1,vbTriangulated2,vbTriangulated3, vbTriangulated4;
+    //两个相机光心到路标点的射线的夹角，这里取最小的一个或者第50个
     float parallax1,parallax2, parallax3, parallax4;
 
     int nGood1 = CheckRT(R1,t1,mvKeys1,mvKeys2,mvMatches12,vbMatchesInliers,K, vP3D1, 4.0*mSigma2, vbTriangulated1, parallax1);
@@ -528,15 +529,16 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
         nsimilar++;
 
     // If there is not a clear winner or not enough triangulated points reject initialization
-    if(maxGood<nMinGood || nsimilar>1)
+    if(maxGood<nMinGood || nsimilar>1)//50
     {
         return false;
     }
 
     // If best reconstruction has enough parallax initialize
+    //传参
     if(maxGood==nGood1)
     {
-        if(parallax1>minParallax)
+        if(parallax1>minParallax)//50
         {
             vP3D = vP3D1;
             vbTriangulated = vbTriangulated1;
@@ -826,17 +828,21 @@ int Initializer::CheckRT(const cv::Mat &R, const cv::Mat &t, const vector<cv::Ke
     vCosParallax.reserve(vKeys1.size());
 
     // Camera 1 Projection Matrix K[I|0]
+    //像素坐标x1=p1*p3d,相机1坐标系与世界坐标系重合
     cv::Mat P1(3,4,CV_32F,cv::Scalar(0));
     K.copyTo(P1.rowRange(0,3).colRange(0,3));
 
+    //相机1圆心坐标
     cv::Mat O1 = cv::Mat::zeros(3,1,CV_32F);
 
     // Camera 2 Projection Matrix K[R|t]
     cv::Mat P2(3,4,CV_32F);
     R.copyTo(P2.rowRange(0,3).colRange(0,3));
     t.copyTo(P2.rowRange(0,3).col(3));
+    //像素坐标x2=p2*p3d
     P2 = K*P2;
 
+    //相机2圆心
     cv::Mat O2 = -R.t()*t;
 
     int nGood=0;
@@ -848,7 +854,7 @@ int Initializer::CheckRT(const cv::Mat &R, const cv::Mat &t, const vector<cv::Ke
 
         const cv::KeyPoint &kp1 = vKeys1[vMatches12[i].first];
         const cv::KeyPoint &kp2 = vKeys2[vMatches12[i].second];
-        cv::Mat p3dC1;
+        cv::Mat p3dC1; //landmark
 
         Triangulate(kp1,kp2,P1,P2,p3dC1);
 
@@ -865,6 +871,7 @@ int Initializer::CheckRT(const cv::Mat &R, const cv::Mat &t, const vector<cv::Ke
         cv::Mat normal2 = p3dC1 - O2;
         float dist2 = cv::norm(normal2);
 
+	//两条射线夹角的余弦值
         float cosParallax = normal1.dot(normal2)/(dist1*dist2);
 
         // Check depth in front of first camera (only if enough parallax, as "infinite" points can easily go to negative depth)

@@ -65,6 +65,7 @@ public:
     void ComputeBoW();
 
     // Set the camera pose.
+    //包括R、T、相机中心坐标、t（世界坐标到相机坐标，相机坐标到世界坐标）
     void SetPose(cv::Mat Tcw);
 
     // Computes rotation, translation and camera center matrices from the camera pose.
