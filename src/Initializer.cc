@@ -242,6 +242,7 @@ cv::Mat Initializer::ComputeH21(const vector<cv::Point2f> &vP1, const vector<cv:
 
     cv::Mat A(2*N,9,CV_32F);
 
+    //把非齐次方程末位补1化成齐次方程
     for(int i=0; i<N; i++)
     {
         const float u1 = vP1[i].x;
@@ -538,7 +539,7 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
     //传参
     if(maxGood==nGood1)
     {
-        if(parallax1>minParallax)//50
+        if(parallax1>minParallax)//1
         {
             vP3D = vP3D1;
             vbTriangulated = vbTriangulated1;
@@ -610,6 +611,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
     float d2 = w.at<float>(1);
     float d3 = w.at<float>(2);
 
+    //只考虑三个不等的情况，且差的较大
     if(d1/d2<1.00001 || d2/d3<1.00001)
     {
         return false;
@@ -630,6 +632,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
     float aux_stheta = sqrt((d1*d1-d2*d2)*(d2*d2-d3*d3))/((d1+d3)*d2);
 
     float ctheta = (d2*d2+d1*d3)/((d1+d3)*d2);
+    //与x1、x3对应
     float stheta[] = {aux_stheta, -aux_stheta, -aux_stheta, aux_stheta};
 
     for(int i=0; i<4; i++)
