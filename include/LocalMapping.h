@@ -61,6 +61,7 @@ public:
     void Release();
     bool isStopped();
     bool stopRequested();
+    //// Tracking will see that Local Mapping is busy or idle
     bool AcceptKeyFrames();
     void SetAcceptKeyFrames(bool flag);
     bool SetNotStop(bool flag);

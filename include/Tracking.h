@@ -136,7 +136,7 @@ protected:
 
     void CheckReplacedInLastFrame();
     bool TrackReferenceKeyFrame();
-    void UpdateLastFrame();
+    void UpdateLastFrame(); // Update pose according to reference keyframe
     bool TrackWithMotionModel();
 
     bool Relocalization();
@@ -215,11 +215,12 @@ protected:
 
     //Last Frame, KeyFrame and Relocalisation Info
     KeyFrame* mpLastKeyFrame;
+    //每次完当前帧都会赋给它
     Frame mLastFrame;
     unsigned int mnLastKeyFrameId;
     unsigned int mnLastRelocFrameId;
 
-    //Motion Model
+    //Motion Model,mCurrentFrame.mTcw*LastTwc
     cv::Mat mVelocity;
 
     //Color order (true RGB, false BGR, ignored if grayscale)

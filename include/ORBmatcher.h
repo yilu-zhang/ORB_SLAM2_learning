@@ -91,7 +91,7 @@ public:
 
     //50，满足匹配要求的最小汉明距离最大阈值
     static const int TH_LOW;
-    //100，满足匹配要求的最大汉明距离最大阈值
+    //100，满足匹配要求的最大汉明距离最大阈值，跟踪时使用
     static const int TH_HIGH;
     //30，方向检测词袋个数
     static const int HISTO_LENGTH;
@@ -101,11 +101,12 @@ protected:
 
     bool CheckDistEpipolarLine(const cv::KeyPoint &kp1, const cv::KeyPoint &kp2, const cv::Mat &F12, const KeyFrame *pKF);
 
-    float RadiusByViewingCos(const float &viewCos);
+    float RadiusByViewingCos(const float &viewCos);//>0.998 2.5,else 4
 
     //计算拥有最多数量相近变换角度的三个匹配点袋子，并将max2、max3与max1比较，小于1/10直接去掉
     void ComputeThreeMaxima(std::vector<int>* histo, const int L, int &ind1, int &ind2, int &ind3);
 
+    //bestdist1<mfNNratio*bestdist2
     float mfNNratio;//init-0.9,default-0.6
     bool mbCheckOrientation;
 };

@@ -78,8 +78,8 @@ public:
     //更新平均长度和dmax、dmin
     void UpdateNormalAndDepth();
 
-    float GetMinDistanceInvariance();
-    float GetMaxDistanceInvariance();
+    float GetMinDistanceInvariance(); //0.8f*mfMinDistance
+    float GetMaxDistanceInvariance(); //1.2f*mfMaxDistance
     int PredictScale(const float &currentDist, KeyFrame*pKF);
     int PredictScale(const float &currentDist, Frame* pF);
 

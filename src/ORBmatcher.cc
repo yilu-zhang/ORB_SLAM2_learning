@@ -84,6 +84,7 @@ int ORBmatcher::SearchByProjection(Frame &F, const vector<MapPoint*> &vpMapPoint
         {
             const size_t idx = *vit;
 
+	    //和路标点有联系
             if(F.mvpMapPoints[idx])
                 if(F.mvpMapPoints[idx]->Observations()>0)
                     continue;
@@ -206,8 +207,15 @@ int ORBmatcher::SearchByBoW(KeyFrame* pKF,Frame &F, vector<MapPoint*> &vpMapPoin
                 {
                     const unsigned int realIdxF = vIndicesF[iF];
 
-                    if(vpMapPointMatches[realIdxF])
-                        continue;
+                     if(vpMapPointMatches[realIdxF])
+ 		    {
+// 			//test
+// 			if(DescriptorDistance(dKF,F.mDescriptors.row(realIdxF))<=TH_LOW)
+// 			{
+// 			    cout<<"repeat match by Bow in:"<<F.mnId<<endl;
+// 			}
+                         continue;
+ 		    }
 
                     const cv::Mat &dF = F.mDescriptors.row(realIdxF);
 

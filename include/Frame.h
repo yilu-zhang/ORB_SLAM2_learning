@@ -176,6 +176,8 @@ public:
     long unsigned int mnId;
 
     // Reference Keyframe.
+    //跟踪成功之后才把tracking当前参考帧赋给当前帧
+    //另外插入局部地图将其参考帧变为自己
     KeyFrame* mpReferenceKF;
 
     // Scale pyramid info.

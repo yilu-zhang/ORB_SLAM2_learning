@@ -89,6 +89,7 @@ public:
     void ReplaceMapPointMatch(const size_t &idx, MapPoint* pMP);
     std::set<MapPoint*> GetMapPoints();
     std::vector<MapPoint*> GetMapPointMatches();
+    //返回该帧被至少minobs帧观察到的路标点
     int TrackedMapPoints(const int &minObs);
     MapPoint* GetMapPoint(const size_t &idx);
 
@@ -135,7 +136,7 @@ public:
     const float mfGridElementHeightInv;
 
     // Variables used by the tracking
-    long unsigned int mnTrackReferenceForFrame;
+    long unsigned int mnTrackReferenceForFrame;//mCurrentFrame.mnId
     long unsigned int mnFuseTargetForKF;
 
     // Variables used by the local mapping
@@ -172,6 +173,7 @@ public:
     //图片的表示向量
     DBoW2::BowVector mBowVec;
     //direct index，图片在第4层结点对应特征序号
+    //map类，first-node，second-特征序号（特征在图片中索引）数组
     DBoW2::FeatureVector mFeatVec;
 
     // Pose relative to parent (this is computed when bad flag is activated)

@@ -453,6 +453,7 @@ void Tracking::Track()
             }
 
             // Delete temporal MapPoints
+            //单目没用
             for(list<MapPoint*>::iterator lit = mlpTemporalPoints.begin(), lend =  mlpTemporalPoints.end(); lit!=lend; lit++)
             {
                 MapPoint* pMP = *lit;
@@ -785,6 +786,7 @@ bool Tracking::TrackReferenceKeyFrame()
         return false;
 
     mCurrentFrame.mvpMapPoints = vpMapPointMatches;
+    //pose设置为最近的
     mCurrentFrame.SetPose(mLastFrame.mTcw);
 
     //直接用g2o优化来计算位姿

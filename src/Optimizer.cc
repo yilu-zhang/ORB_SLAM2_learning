@@ -239,8 +239,8 @@ void Optimizer::BundleAdjustment(const vector<KeyFrame *> &vpKFs, const vector<M
 int Optimizer::PoseOptimization(Frame *pFrame)
 {
     g2o::SparseOptimizer optimizer;
-    g2o::BlockSolver_6_3::LinearSolverType * linearSolver;
-
+    //6DOF_3D,定义线性求解器
+    g2o::BlockSolver_6_3::LinearSolverType * linearSolver;    
     linearSolver = new g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType>();
 
     g2o::BlockSolver_6_3 * solver_ptr = new g2o::BlockSolver_6_3(linearSolver);
@@ -373,11 +373,12 @@ int Optimizer::PoseOptimization(Frame *pFrame)
     int nBad=0;
     for(size_t it=0; it<4; it++)
     {
-
+	//优化
         vSE3->setEstimate(Converter::toSE3Quat(pFrame->mTcw));
         optimizer.initializeOptimization(0);
         optimizer.optimize(its[it]);
 
+	//每次都重新计算异常，返回的是最后一次的结果
         nBad=0;
         for(size_t i=0, iend=vpEdgesMono.size(); i<iend; i++)
         {
@@ -392,6 +393,7 @@ int Optimizer::PoseOptimization(Frame *pFrame)
 
             const float chi2 = e->chi2();
 
+	    //放到0层的才会被优化
             if(chi2>chi2Mono[it])
             {                
                 pFrame->mvbOutlier[idx]=true;
@@ -404,8 +406,9 @@ int Optimizer::PoseOptimization(Frame *pFrame)
                 e->setLevel(0);
             }
 
+            //第三次时才加鲁棒和，上面只是设置鲁棒和
             if(it==2)
-                e->setRobustKernel(0);
+                e->setRobustKernel(0);  
         }
 
         for(size_t i=0, iend=vpEdgesStereo.size(); i<iend; i++)
