@@ -108,6 +108,7 @@ protected:
     LoopClosing* mpLoopCloser;
     Tracking* mpTracker;
 
+    //关键帧队列
     std::list<KeyFrame*> mlNewKeyFrames;
 
     KeyFrame* mpCurrentKeyFrame;
@@ -123,6 +124,7 @@ protected:
     bool mbNotStop;
     std::mutex mMutexStop;
 
+    // Tracking will see that Local Mapping is busy or idle
     bool mbAcceptKeyFrames;
     std::mutex mMutexAccept;
 };

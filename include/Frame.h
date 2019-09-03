@@ -150,8 +150,8 @@ public:
     std::vector<float> mvDepth;
 
     // Bag of Words Vector structures.
-    DBoW2::BowVector mBowVec;
-    DBoW2::FeatureVector mFeatVec;
+    DBoW2::BowVector mBowVec;  //std::map<WordId, WordValue>
+    DBoW2::FeatureVector mFeatVec;  //4-map<NodeId, std::vector<unsigned int> 
 
     // ORB descriptor, each row associated to a keypoint.
     cv::Mat mDescriptors, mDescriptorsRight;

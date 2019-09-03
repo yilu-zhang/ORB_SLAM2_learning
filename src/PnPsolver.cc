@@ -147,6 +147,7 @@ void PnPsolver::SetRansacParameters(double probability, int minInliers, int maxI
     if(mRansacMinInliers==N)
         nIterations=1;
     else
+	//mRansacEpsilon越大迭代越少
         nIterations = ceil(log(1-mRansacProb)/log(1-pow(mRansacEpsilon,3)));
 
     mRansacMaxIts = max(1,min(nIterations,mRansacMaxIts));
@@ -392,6 +393,7 @@ void PnPsolver::choose_control_points(void)
   CvMat DC      = cvMat(3, 1, CV_64F, dc);
   CvMat UCt     = cvMat(3, 3, CV_64F, uct);
 
+  //去质心
   for(int i = 0; i < number_of_correspondences; i++)
     for(int j = 0; j < 3; j++)
       PW0->data.db[3 * i + j] = pws[3 * i + j] - cws[0][j];
@@ -413,7 +415,7 @@ void PnPsolver::compute_barycentric_coordinates(void)
   double cc[3 * 3], cc_inv[3 * 3];
   CvMat CC     = cvMat(3, 3, CV_64F, cc);
   CvMat CC_inv = cvMat(3, 3, CV_64F, cc_inv);
-
+ 
   for(int i = 0; i < 3; i++)
     for(int j = 1; j < 4; j++)
       cc[3 * i + j - 1] = cws[j][i] - cws[0][i];

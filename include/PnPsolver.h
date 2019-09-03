@@ -78,7 +78,7 @@ class PnPsolver {
 
   // Functions from the original EPnP code
   void set_maximum_number_of_correspondences(const int n);
-  void reset_correspondences(void);
+  void reset_correspondences(void);//number_of_correspondences = 0
   void add_correspondence(const double X, const double Y, const double Z,
               const double u, const double v);
 
@@ -107,7 +107,9 @@ class PnPsolver {
   double dot(const double * v1, const double * v2);
   double dist2(const double * p1, const double * p2);
 
+  //计算控制点距离
   void compute_rho(double * rho);
+  //计算v和L
   void compute_L_6x10(const double * ut, double * l_6x10);
 
   void gauss_newton(const CvMat * L_6x10, const CvMat * Rho, double current_betas[4]);
@@ -127,10 +129,12 @@ class PnPsolver {
 
   double uc, vc, fu, fv;
 
+  //P-MapPoint;W-world coordinate;c-camera coordinate;u-pixel coordinate
   double * pws, * us, * alphas, * pcs;
   int maximum_number_of_correspondences;
   int number_of_correspondences;
 
+  //第一维：点序号，第二维：xyz坐标
   double cws[4][3], ccs[4][3];
   double cws_determinant;
 
