@@ -64,6 +64,7 @@ public:
     // Search matches between MapPoints in a KeyFrame and ORB in a Frame.
     // Brute force constrained to ORB that belong to the same vocabulary node (at a certain level)
     // Used in Relocalisation and Loop Detection
+     //寻找两帧之间匹配的特征点，并将路标点存于第三个参数
     int SearchByBoW(KeyFrame *pKF, Frame &F, std::vector<MapPoint*> &vpMapPointMatches);
     int SearchByBoW(KeyFrame *pKF1, KeyFrame* pKF2, std::vector<MapPoint*> &vpMatches12);
 

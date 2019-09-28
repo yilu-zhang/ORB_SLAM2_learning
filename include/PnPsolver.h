@@ -69,10 +69,12 @@ class PnPsolver {
 
   cv::Mat find(vector<bool> &vbInliers, int &nInliers);
 
+  //至少会迭代第一个参数次
   cv::Mat iterate(int nIterations, bool &bNoMore, vector<bool> &vbInliers, int &nInliers);
 
  private:
 
+   //利用重投影检查内点
   void CheckInliers();
   bool Refine();
 
@@ -92,15 +94,20 @@ class PnPsolver {
   double reprojection_error(const double R[3][3], const double t[3]);
 
   void choose_control_points(void);
+  //求alphas
   void compute_barycentric_coordinates(void);
   void fill_M(CvMat * M, const int row, const double * alphas, const double u, const double v);
   void compute_ccs(const double * betas, const double * ut);
   void compute_pcs(void);
 
+  //有一个符号反了，说明其他所有都反了
   void solve_for_sign(void);
 
+  //求出4个beta的近似值，为了给高斯牛顿比较好的初值
   void find_betas_approx_1(const CvMat * L_6x10, const CvMat * Rho, double * betas);
+  //求2个beta近似值
   void find_betas_approx_2(const CvMat * L_6x10, const CvMat * Rho, double * betas);
+  //求3个beta近似值
   void find_betas_approx_3(const CvMat * L_6x10, const CvMat * Rho, double * betas);
   void qr_solve(CvMat * A, CvMat * b, CvMat * X);
 
@@ -134,7 +141,7 @@ class PnPsolver {
   int maximum_number_of_correspondences;
   int number_of_correspondences;
 
-  //第一维：点序号，第二维：xyz坐标
+  //第一维：控制点序号，第二维：xyz坐标
   double cws[4][3], ccs[4][3];
   double cws_determinant;
 
@@ -178,6 +185,7 @@ class PnPsolver {
   double mRansacProb;
 
   // RANSAC min inliers
+  //N(匹配点数）*mRansacEpsilon
   int mRansacMinInliers;
 
   // RANSAC max iterations
@@ -190,6 +198,7 @@ class PnPsolver {
   float mRansacTh;
 
   // RANSAC Minimun Set used at each iteration
+  //程序是4个点
   int mRansacMinSet;
 
   // Max square error associated with scale level. Max error = th*th*sigma(level)*sigma(level)

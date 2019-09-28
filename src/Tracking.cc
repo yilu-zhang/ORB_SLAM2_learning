@@ -1377,6 +1377,7 @@ bool Tracking::Relocalization()
     vector<PnPsolver*> vpPnPsolvers;
     vpPnPsolvers.resize(nKFs);
 
+    //保存候选帧中路标点与当前帧匹配的候选点
     vector<vector<MapPoint*> > vvpMapPointMatches;
     vvpMapPointMatches.resize(nKFs);
 

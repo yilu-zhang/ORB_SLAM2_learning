@@ -495,6 +495,8 @@ double PnPsolver::compute_pose(double R[3][3], double t[3])
   cvSVD(&MtM, &D, &Ut, 0, CV_SVD_MODIFY_A | CV_SVD_U_T);
   cvReleaseMat(&M);
 
+  //l为betal的系数矩阵，6为同一v4个点两两之间的距离，10为4个betal两两不同的组合6+4，N=<3时未知数个数小于等于方程组个数
+  //rho为两两控制点之间的距离
   double l_6x10[6 * 10], rho[6];
   CvMat L_6x10 = cvMat(6, 10, CV_64F, l_6x10);
   CvMat Rho    = cvMat(6,  1, CV_64F, rho);
@@ -665,7 +667,6 @@ double PnPsolver::compute_R_and_t(const double * ut, const double * betas,
 
 // betas10        = [B11 B12 B22 B13 B23 B33 B14 B24 B34 B44]
 // betas_approx_1 = [B11 B12     B13         B14]
-
 void PnPsolver::find_betas_approx_1(const CvMat * L_6x10, const CvMat * Rho,
 			       double * betas)
 {
@@ -768,6 +769,7 @@ void PnPsolver::compute_L_6x10(const double * ut, double * l_6x10)
   v[2] = ut + 12 *  9;
   v[3] = ut + 12 *  8;
 
+  //4个解v3维坐标两辆之间的距离，6=3+2+1
   double dv[4][6][3];
 
   for(int i = 0; i < 4; i++) {
@@ -846,7 +848,9 @@ void PnPsolver::gauss_newton(const CvMat * L_6x10, const CvMat * Rho,
 
   double a[6*4], b[6], x[4];
   CvMat A = cvMat(6, 4, CV_64F, a);
+  //
   CvMat B = cvMat(6, 1, CV_64F, b);
+  //betas的增量
   CvMat X = cvMat(4, 1, CV_64F, x);
 
   for(int k = 0; k < iterations_number; k++) {
