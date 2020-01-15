@@ -145,6 +145,7 @@ public:
 
     // Variables used by the keyframe database
     long unsigned int mnLoopQuery;
+    //关键帧与当前帧相同词（特征）数
     int mnLoopWords;
     float mLoopScore;
     long unsigned int mnRelocQuery;

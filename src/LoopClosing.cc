@@ -130,7 +130,8 @@ bool LoopClosing::DetectLoop()
         if(pKF->isBad())
             continue;
         const DBoW2::BowVector &BowVec = pKF->mBowVec;
-
+	
+	//取值[0,1],值越大相似度越高，见DBOW2论文
         float score = mpORBVocabulary->score(CurrentBowVec, BowVec);
 
         if(score<minScore)

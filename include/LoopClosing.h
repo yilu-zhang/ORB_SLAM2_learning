@@ -84,6 +84,7 @@ public:
 
 protected:
 
+    //关键帧队列mlpLoopKeyFrameQueue非空
     bool CheckNewKeyFrames();
 
     bool DetectLoop();
