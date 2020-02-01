@@ -77,6 +77,7 @@ void KeyFrameDatabase::clear()
 vector<KeyFrame*> KeyFrameDatabase::DetectLoopCandidates(KeyFrame* pKF, float minScore)
 {
     set<KeyFrame*> spConnectedKeyFrames = pKF->GetConnectedKeyFrames();
+    //the KFs having same word with pKF
     list<KeyFrame*> lKFsSharingWords;
 
     // Search all keyframes that share a word with current keyframes
@@ -118,8 +119,10 @@ vector<KeyFrame*> KeyFrameDatabase::DetectLoopCandidates(KeyFrame* pKF, float mi
             maxCommonWords=(*lit)->mnLoopWords;
     }
 
+    ////threshold value 2
     int minCommonWords = maxCommonWords*0.8f;
 
+    //no use
     int nscores=0;
 
     // Compute similarity score. Retain the matches whose score is higher than minScore
@@ -131,6 +134,7 @@ vector<KeyFrame*> KeyFrameDatabase::DetectLoopCandidates(KeyFrame* pKF, float mi
         {
             nscores++;
 
+	    //don't consider the number of feature in the image?
             float si = mpVoc->score(pKF->mBowVec,pKFi->mBowVec);
 
             pKFi->mLoopScore = si;
@@ -173,6 +177,7 @@ vector<KeyFrame*> KeyFrameDatabase::DetectLoopCandidates(KeyFrame* pKF, float mi
             bestAccScore=accScore;
     }
 
+    ////threshold value 3
     // Return all those keyframes with a score higher than 0.75*bestScore
     float minScoreToRetain = 0.75f*bestAccScore;
 

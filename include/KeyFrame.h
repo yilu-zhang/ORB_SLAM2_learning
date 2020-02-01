@@ -147,6 +147,7 @@ public:
     long unsigned int mnLoopQuery;
     //关键帧与当前帧相同词（特征）数
     int mnLoopWords;
+    //the score of the similarity between the loop KF and the another KF
     float mLoopScore;
     long unsigned int mnRelocQuery;
     int mnRelocWords;
@@ -170,8 +171,8 @@ public:
     const std::vector<float> mvDepth; // negative value for monocular points
     const cv::Mat mDescriptors;
 
-    //BoW
-    //图片的表示向量
+    //BoW,all feature in the keyframe,only the feature in the keyframe
+    //public std::map<WordId, WordValue>
     DBoW2::BowVector mBowVec;
     //direct index，图片在第4层结点对应特征序号
     //map类，first-node，second-特征序号（特征在图片中索引）数组

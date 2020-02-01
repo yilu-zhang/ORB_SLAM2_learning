@@ -123,6 +123,7 @@ bool LoopClosing::DetectLoop()
     // We will impose loop candidates to have a higher similarity than this
     const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
     const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
+    //threshold value 1
     float minScore = 1;
     for(size_t i=0; i<vpConnectedKeyFrames.size(); i++)
     {
@@ -225,6 +226,7 @@ bool LoopClosing::DetectLoop()
         return true;
     }
 
+    //don't go to here?
     mpCurrentKF->SetErase();
     return false;
 }

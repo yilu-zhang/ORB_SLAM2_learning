@@ -118,6 +118,7 @@ protected:
     std::mutex mMutexLoopQueue;
 
     // Loop detector parameters
+    //3
     float mnCovisibilityConsistencyTh;
 
     // Loop detector variables

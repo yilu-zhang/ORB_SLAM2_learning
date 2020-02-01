@@ -62,7 +62,7 @@ protected:
   // Associated vocabulary
   const ORBVocabulary* mpVoc;
 
-  // Inverted file,feature->imagesd
+  // Inverted file,feature(index)->imagesd,one feature may in more than one image
   std::vector<list<KeyFrame*> > mvInvertedFile;
 
   // Mutex
