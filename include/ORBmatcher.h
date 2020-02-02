@@ -59,6 +59,7 @@ public:
 
     // Project MapPoints using a Similarity Transformation and search matches.
     // Used in loop detection (Loop Closing)
+    //the matched MapPoints restore in &vpMatched
      int SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const std::vector<MapPoint*> &vpPoints, std::vector<MapPoint*> &vpMatched, int th);
 
     // Search matches between MapPoints in a KeyFrame and ORB in a Frame.

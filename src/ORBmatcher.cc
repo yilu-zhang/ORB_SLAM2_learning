@@ -307,6 +307,7 @@ int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const vector<MapP
     cv::Mat sRcw = Scw.rowRange(0,3).colRange(0,3);
     const float scw = sqrt(sRcw.row(0).dot(sRcw.row(0)));
     cv::Mat Rcw = sRcw/scw;
+    //why /scw?
     cv::Mat tcw = Scw.rowRange(0,3).col(3)/scw;
     cv::Mat Ow = -Rcw.t()*tcw;
 

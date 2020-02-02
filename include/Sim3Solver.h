@@ -53,6 +53,7 @@ protected:
 
     void ComputeCentroid(cv::Mat &P, cv::Mat &Pr, cv::Mat &C);
 
+    // Horn 1987, Closed-form solution of absolute orientataion using unit quaternions
     void ComputeSim3(cv::Mat &P1, cv::Mat &P2);
 
     void CheckInliers();
@@ -67,7 +68,9 @@ protected:
     KeyFrame* mpKF1;
     KeyFrame* mpKF2;
 
+    //the 3D coordinate in the camera1 frame
     std::vector<cv::Mat> mvX3Dc1;
+    //the 3D coordinate in the camera2 frame
     std::vector<cv::Mat> mvX3Dc2;
     std::vector<MapPoint*> mvpMapPoints1;
     std::vector<MapPoint*> mvpMapPoints2;
@@ -85,6 +88,7 @@ protected:
     cv::Mat mR12i;
     cv::Mat mt12i;
     float ms12i;
+    //include scale
     cv::Mat mT12i;
     cv::Mat mT21i;
     std::vector<bool> mvbInliersi;

@@ -434,7 +434,7 @@ void LoopClosing::CorrectLoop()
     // Ensure current keyframe is updated
     mpCurrentKF->UpdateConnections();
 
-    // Retrive keyframes connected to the current keyframe and compute corrected Sim3 pose by propagation
+    // Retrive keyframes connected to the current keyframe(loop KF) and compute corrected Sim3 pose by propagation
     mvpCurrentConnectedKFs = mpCurrentKF->GetVectorCovisibleKeyFrames();
     mvpCurrentConnectedKFs.push_back(mpCurrentKF);
 
@@ -459,6 +459,7 @@ void LoopClosing::CorrectLoop()
                 cv::Mat Ric = Tic.rowRange(0,3).colRange(0,3);
                 cv::Mat tic = Tic.rowRange(0,3).col(3);
                 g2o::Sim3 g2oSic(Converter::toMatrix3d(Ric),Converter::toVector3d(tic),1.0);
+		//class sim3 self define *
                 g2o::Sim3 g2oCorrectedSiw = g2oSic*mg2oScw;
                 //Pose corrected with the Sim3 of the loop closure
                 CorrectedSim3[pKFi]=g2oCorrectedSiw;
