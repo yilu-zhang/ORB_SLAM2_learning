@@ -197,6 +197,8 @@ void FrameDrawer::Update(Tracking *pTracker)
             }
         }
     }
+    
+    //Update in tracking.cc mpFrameDrawer->Update(this)
     mState=static_cast<int>(pTracker->mLastProcessedState);
 }
 
