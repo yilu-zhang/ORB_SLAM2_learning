@@ -1373,7 +1373,7 @@ bool TemplatedVocabulary<TDescriptor,F>::loadFromTextFile(const std::string &fil
 
     m_words.reserve(pow((double)m_k, (double)m_L + 1));
 
-    m_nodes.resize(1);
+    m_nodes.resize(1);//m_nodes.size()=1
     m_nodes[0].id = 0;
     while(!f.eof())
     {

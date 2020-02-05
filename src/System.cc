@@ -62,7 +62,9 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout << endl << "Loading ORB Vocabulary. This could take a while..." << endl;
 
     mpVocabulary = new ORBVocabulary();
-    //检查文件是否能打开
+    //load vocabulary/ORBvoc.txt line 1:K(0-20) L(1-10) n1(0-5) n2(0-3)
+    //default:K=10,L=6,n1=0(scoringtype=L1_NORM),n2=0(WeightingType=TF_IDF)
+    //not loading with tree
     bool bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
     if(!bVocLoad)
     {

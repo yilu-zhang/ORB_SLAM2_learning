@@ -117,10 +117,10 @@ protected:
     //其索引对应v(0-15),值对应u轴，两个组成半径为15的圆,计算方向时用
     std::vector<int> umax;
 
-    std::vector<float> mvScaleFactor; //1.2
-    std::vector<float> mvInvScaleFactor;  //1/1.2  
-    std::vector<float> mvLevelSigma2; //1.2*1.2
-    std::vector<float> mvInvLevelSigma2; //1/(1.2*1.2)
+    std::vector<float> mvScaleFactor; //[1,1.2,1.2*1.2,,,1.2^nlevels]
+    std::vector<float> mvInvScaleFactor;  //1/mvScaleFactor[i] 
+    std::vector<float> mvLevelSigma2; //mvScaleFactor[i]^2 
+    std::vector<float> mvInvLevelSigma2; //1/mvLevelSigma2[i]
 };
 
 } //namespace ORB_SLAM

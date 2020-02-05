@@ -77,7 +77,7 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
     }
     DistCoef.copyTo(mDistCoef);
     
-    //没见设置文件有？
+    //if none "camera.bf" in files,the value=0
     mbf = fSettings["Camera.bf"];
 
     //帧率
@@ -113,14 +113,12 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
         cout << "- color order: BGR (ignored if grayscale)" << endl;
 
     // Load ORB parameters
+    int nFeatures = fSettings["ORBextractor.nFeatures"];  //1000
+    float fScaleFactor = fSettings["ORBextractor.scaleFactor"]; //1.2
+    int nLevels = fSettings["ORBextractor.nLevels"];//8
+    int fIniThFAST = fSettings["ORBextractor.iniThFAST"];//20
+    int fMinThFAST = fSettings["ORBextractor.minThFAST"];//7
 
-    int nFeatures = fSettings["ORBextractor.nFeatures"];
-    float fScaleFactor = fSettings["ORBextractor.scaleFactor"];
-    int nLevels = fSettings["ORBextractor.nLevels"];
-    int fIniThFAST = fSettings["ORBextractor.iniThFAST"];
-    int fMinThFAST = fSettings["ORBextractor.minThFAST"];
-
-    //为什么不放在if内
     mpORBextractorLeft = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
 
     if(sensor==System::STEREO)
