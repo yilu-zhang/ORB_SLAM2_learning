@@ -167,7 +167,9 @@ private:
 
     // Change mode flags
     std::mutex mMutexMode;
+    //for setting monlytrack=true
     bool mbActivateLocalizationMode;
+    //for setting molytrak=false
     bool mbDeactivateLocalizationMode;
 
     // Tracking state

@@ -171,8 +171,9 @@ public:
     // Camera pose.
     cv::Mat mTcw;
 
-    // Current and Next Frame id.
+    // Next Frame id.
     static long unsigned int nNextId;
+    //Frame ID,progressive increase
     long unsigned int mnId;
 
     // Reference Keyframe.
