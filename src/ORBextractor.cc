@@ -62,6 +62,8 @@
 
 #include "ORBextractor.h"
 
+#include <iostream>
+
 
 using namespace cv;
 using namespace std;
@@ -586,7 +588,6 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
     }
 
     list<ExtractorNode>::iterator lit = lNodes.begin();
-
     while(lit!=lNodes.end())
     {
         if(lit->vKeys.size()==1)
@@ -633,7 +634,7 @@ vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>&
             {
                 // If more than one point, subdivide
                 ExtractorNode n1,n2,n3,n4;
-		//继续四叉树分解，已经是正方形了处理方便
+		//继续四叉树分解，已经是正方形,长方形了处理方便
                 lit->DivideNode(n1,n2,n3,n4);
 
                 // Add childs if they contain points
@@ -795,6 +796,7 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
 
     for (int level = 0; level < nlevels; ++level)
     {
+	//FAST's radium is 3 
         const int minBorderX = EDGE_THRESHOLD-3;
         const int minBorderY = minBorderX;
         const int maxBorderX = mvImagePyramid[level].cols-EDGE_THRESHOLD+3;
@@ -1085,6 +1087,15 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
 
     // Pre-compute the scale pyramid
     ComputePyramid(image);
+    
+    //zhang:show rows and cols of pyramid
+    //int i;
+    //for(i=0;i<8;i++)
+    //{
+      // std::cout << mvImagePyramid[i].cols << " " << mvImagePyramid[i].rows << endl;
+    //}
+    
+    //640 480;533 400;444 333;370 278;309 231;257 193;214 161;179 134
 
     //提取各金字塔层的关键点及其方向，结果存在allKeypoints中，第一维是level，第二维是相应关键点
     //坐标为在各层自己尺度下坐标

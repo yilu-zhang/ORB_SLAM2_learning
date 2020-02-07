@@ -88,6 +88,8 @@ public:
         return mvInvLevelSigma2;
     }
 
+    //0-7:1,1/1.2,1/1.44,,,
+    //src image.cols+EDGE_THRESHOLD*2
     std::vector<cv::Mat> mvImagePyramid;
 
 protected:

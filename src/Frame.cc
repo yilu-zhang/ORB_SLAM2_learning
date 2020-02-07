@@ -134,12 +134,12 @@ Frame::Frame(const cv::Mat &imGray, const cv::Mat &imDepth, const double &timeSt
 
     // ORB extraction
     ExtractORB(0,imGray);
-
+    
     N = mvKeys.size();
 
     if(mvKeys.empty())
         return;
-
+      
     UndistortKeyPoints();
 
     ComputeStereoFromRGBD(imDepth);
@@ -193,6 +193,15 @@ Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor* extra
 
     if(mvKeys.empty())
         return;
+    
+    //zhang:show the coordinate of keypoints
+    //result:no >640,480
+    //int i = 0;
+    //for(;i<N;i++)
+    //{
+    //  if(mvKeys[i].pt.x > 640 || mvKeys[i].pt.y>480)
+	//cout << mvKeys[i].pt.x << " " << mvKeys[i].pt.y <<endl;
+    //}
 
     //提取完特征点再校正
     UndistortKeyPoints();
