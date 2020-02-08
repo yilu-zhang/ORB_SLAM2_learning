@@ -881,6 +881,21 @@ void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoin
         }
     }//proces all levels
 
+    //zhang:show the coordinate of keypoints
+    //result:no >621,461,<19,
+    //int i = 0,j=0;
+    //for(i=0;i<8;i++)
+    //{
+     // int n = allKeypoints[i].size();
+      //for(j=0;j<n;j++)
+      //{
+	//KeyPoint test_kp;
+	//test_kp.pt = allKeypoints[i][j].pt*mvScaleFactor[i];
+	//if(test_kp.pt.x < 19 ||test_kp.pt.x > 621 || test_kp.pt.y>461||test_kp.pt.y<19)
+	//  cout << test_kp.pt.x*mvScaleFactor[i] << " " << test_kp.pt.y <<endl;
+     // }
+   // }
+    
     // compute orientations
     for (int level = 0; level < nlevels; ++level)
         computeOrientation(mvImagePyramid[level], allKeypoints[level], umax);

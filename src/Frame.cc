@@ -26,6 +26,7 @@
 namespace ORB_SLAM2
 {
 
+//global variable
 long unsigned int Frame::nNextId=0;
 bool Frame::mbInitialComputations=true;
 float Frame::cx, Frame::cy, Frame::fx, Frame::fy, Frame::invfx, Frame::invfy;
