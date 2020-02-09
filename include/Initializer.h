@@ -78,10 +78,10 @@ private:
     void DecomposeE(const cv::Mat &E, cv::Mat &R1, cv::Mat &R2, cv::Mat &t);
 
 
-    // Keypoints from Reference Frame (Frame 1)
+    // undistort Keypoints from Reference Frame (Frame 1)
     vector<cv::KeyPoint> mvKeys1;
 
-    // Keypoints from Current Frame (Frame 2)
+    // undistort from Current Frame (Frame 2)
     vector<cv::KeyPoint> mvKeys2;
 
     // Current Matches from Reference to Current
@@ -94,11 +94,11 @@ private:
     cv::Mat mK;
 
     // Standard Deviation and Variance
-    //1
+    //1,p75 of mutiple view book
     float mSigma, mSigma2;
 
     // Ransac max iterations
-    // monocular:200
+    // monocular:200,ratio of outlier is around 40%
     int mMaxIterations;
 
     // Ransac sets

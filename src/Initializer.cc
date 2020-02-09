@@ -49,12 +49,14 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
     mvKeys2 = CurrentFrame.mvKeysUn;
 
     mvMatches12.clear();
-    mvMatches12.reserve(mvKeys2.size());
+    //zhang,chang
+    mvMatches12.reserve(mvKeys1.size());
+    //mvMatches12.reserve(mvKeys2.size());
     //参考帧有匹配点的为true
     mvbMatched1.resize(mvKeys1.size());
     for(size_t i=0, iend=vMatches12.size();i<iend; i++)
     {
-	//初值为-1,>0表示有匹配点
+	//初值为-1,>=0表示有匹配点
         if(vMatches12[i]>=0)
         {
             mvMatches12.push_back(make_pair(i,vMatches12[i]));
@@ -134,6 +136,7 @@ void Initializer::FindHomography(vector<bool> &vbMatchesInliers, float &score, c
     // Normalize coordinates
     vector<cv::Point2f> vPn1, vPn2;
     //normalize matrix
+    //vPn1=T1*mvKeys1
     cv::Mat T1, T2;
     Normalize(mvKeys1,vPn1, T1);
     Normalize(mvKeys2,vPn2, T2);
@@ -163,6 +166,7 @@ void Initializer::FindHomography(vector<bool> &vbMatchesInliers, float &score, c
         }
 
         //计算当前组H
+        //x2=H21*x1
         cv::Mat Hn = ComputeH21(vPn1i,vPn2i);
         H21i = T2inv*Hn*T1;
         H12i = H21i.inv();
@@ -312,6 +316,7 @@ cv::Mat Initializer::ComputeF21(const vector<cv::Point2f> &vP1,const vector<cv::
 
     cv::SVDecomp(Fpre,w,u,vt,cv::SVD::MODIFY_A | cv::SVD::FULL_UV);
 
+    //the  w value of F is[x,x,0]
     w.at<float>(2)=0;
 
     return  u*cv::Mat::diag(w)*vt;
@@ -345,6 +350,7 @@ float Initializer::CheckHomography(const cv::Mat &H21, const cv::Mat &H12, vecto
 
     float score = 0;
 
+    //p75 of mutiple view book
     const float th = 5.991;
 
     const float invSigmaSquare = 1.0/(sigma*sigma);
@@ -612,6 +618,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
     float d3 = w.at<float>(2);
 
     //只考虑三个不等的情况，且差的较大
+    //d1>d2>d3
     if(d1/d2<1.00001 || d2/d3<1.00001)
     {
         return false;

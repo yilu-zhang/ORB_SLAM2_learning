@@ -415,6 +415,7 @@ int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const vector<MapP
 int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f> &vbPrevMatched, vector<int> &vnMatches12, int windowSize)
 {
     int nmatches=0;
+    //mvIniMatches,init
     vnMatches12 = vector<int>(F1.mvKeysUn.size(),-1);
 
     vector<int> rotHist[HISTO_LENGTH];//30

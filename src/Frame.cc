@@ -340,7 +340,7 @@ vector<size_t> Frame:: GetFeaturesInArea(const float &x, const float  &y, const 
     vector<size_t> vIndices;
     vIndices.reserve(N);
 
-    //计算上一次match点可能在的grid
+    //计算上一次match点可能在的grid,x-r-mnminx
     const int nMinCellX = max(0,(int)floor((x-mnMinX-r)*mfGridElementWidthInv));
     if(nMinCellX>=FRAME_GRID_COLS)
         return vIndices;
