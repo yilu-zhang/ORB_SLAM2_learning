@@ -711,7 +711,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
         vn.push_back(n);
     }
 
-
+    //read here
     int bestGood = 0;
     int secondBestGood = 0;    
     int bestSolutionIdx = -1;
