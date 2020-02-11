@@ -624,6 +624,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
         return false;
     }
 
+    //R21,RCW
     vector<cv::Mat> vR, vt, vn;
     vR.reserve(8);
     vt.reserve(8);
@@ -637,7 +638,7 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
 
     //case d'=d2
     float aux_stheta = sqrt((d1*d1-d2*d2)*(d2*d2-d3*d3))/((d1+d3)*d2);
-
+    //cos
     float ctheta = (d2*d2+d1*d3)/((d1+d3)*d2);
     //与x1、x3对应
     float stheta[] = {aux_stheta, -aux_stheta, -aux_stheta, aux_stheta};

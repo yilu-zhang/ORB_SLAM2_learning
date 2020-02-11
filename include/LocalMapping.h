@@ -117,6 +117,7 @@ protected:
 
     std::mutex mMutexNewKFs;
 
+    //when Insert KeyFrame,mbAbortBA=true
     bool mbAbortBA;
 
     bool mbStopped;

@@ -88,7 +88,7 @@ public:
     static long unsigned int nNextId;
     long int mnFirstKFid;
     long int mnFirstFrame;
-    int nObs;
+    int nObs;//the number of the KF seeing the MapPoint
 
     // Variables used by the tracking
     float mTrackProjX;
@@ -122,10 +122,11 @@ protected:
      // Keyframes observing the point and associated index in keyframe
      std::map<KeyFrame*,size_t> mObservations;
 
-     // Mean viewing direction
+     // Mean viewing direction(3*1)
      cv::Mat mNormalVector;
 
      // Best descriptor to fast matching
+     // Best descriptor: the descriptor with least median distance to the rest
      cv::Mat mDescriptor;
 
      // Reference KeyFrame
