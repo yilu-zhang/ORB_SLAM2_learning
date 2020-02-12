@@ -173,7 +173,7 @@ protected:
     Initializer* mpInitializer;
 
     //Local Map
-    KeyFrame* mpReferenceKF;
+    KeyFrame* mpReferenceKF;//most connection
     std::vector<KeyFrame*> mvpLocalKeyFrames;
     std::vector<MapPoint*> mvpLocalMapPoints;
     
@@ -220,7 +220,7 @@ protected:
     unsigned int mnLastKeyFrameId;
     unsigned int mnLastRelocFrameId;
 
-    //Motion Model,mCurrentFrame.mTcw*LastTwc
+    //Motion Model,TcFlastF
     cv::Mat mVelocity;
 
     //Color order (true RGB, false BGR, ignored if grayscale)

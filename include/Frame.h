@@ -160,6 +160,7 @@ public:
     std::vector<MapPoint*> mvpMapPoints;
 
     // Flag to identify outlier associations.
+    //chang in Optimization
     std::vector<bool> mvbOutlier;
 
     // Keypoints are assigned to cells in a grid to reduce matching complexity when projecting MapPoints.

@@ -133,13 +133,13 @@ protected:
      //用于计算能观测的最大最小距离，随着运动不断更新
      KeyFrame* mpRefKF;
 
-     // Tracking counters
+     // Tracking counters,in frustum
      int mnVisible;
      int mnFound;
 
      // Bad flag (we do not currently erase MapPoint from memory)
      bool mbBad;
-     MapPoint* mpReplaced;
+     MapPoint* mpReplaced;//for local mapping?
 
      // Scale invariance distances
      float mfMinDistance;//mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors[nLevels-1]

@@ -71,6 +71,7 @@ protected:
     std::set<MapPoint*> mspMapPoints;
     std::set<KeyFrame*> mspKeyFrames;
 
+    //tracking->mvpLocalMapPoints
     std::vector<MapPoint*> mvpReferenceMapPoints;
 
     long unsigned int mnMaxKFid;

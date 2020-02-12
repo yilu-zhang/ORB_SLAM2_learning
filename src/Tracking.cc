@@ -310,13 +310,15 @@ void Tracking::Track()
 
                 if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
                 {
+		    //zhang:lost 1
                     bOK = TrackReferenceKeyFrame();
                 }
                 else
                 {
-                    bOK = TrackWithMotionModel();
+		    //zhang:lost 2
+                    bOK = TrackWithMotionModel();		    
                     if(!bOK)
-                        bOK = TrackReferenceKeyFrame();
+                        bOK = TrackReferenceKeyFrame();//zhang:lost 3
                 }
             }
             else
@@ -401,8 +403,9 @@ void Tracking::Track()
         // If we have an initial estimation of the camera pose and matching. Track the local map.
         if(!mbOnlyTracking)
         {
+	  
             if(bOK)
-                bOK = TrackLocalMap();
+                bOK = TrackLocalMap();//zhang:lost 4
         }
         else
         {

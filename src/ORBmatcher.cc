@@ -1365,7 +1365,8 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, const Frame &LastFrame, 
     const cv::Mat tlw = LastFrame.mTcw.rowRange(0,3).col(3);
 
     const cv::Mat tlc = Rlw*twc+tlw;
-
+    
+    //monocular:false
     const bool bForward = tlc.at<float>(2)>CurrentFrame.mb && !bMono;
     const bool bBackward = -tlc.at<float>(2)>CurrentFrame.mb && !bMono;
 
