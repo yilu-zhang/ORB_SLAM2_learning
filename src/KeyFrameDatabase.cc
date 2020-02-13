@@ -25,6 +25,8 @@
 
 #include<mutex>
 
+#include <iostream>
+
 using namespace std;
 
 namespace ORB_SLAM2
@@ -221,7 +223,7 @@ vector<KeyFrame*> KeyFrameDatabase::DetectRelocalizationCandidates(Frame *F)
                 {
                     pKFi->mnRelocWords=0;
                     pKFi->mnRelocQuery=F->mnId;
-                    lKFsSharingWords.push_back(pKFi);
+                    lKFsSharingWords.push_back(pKFi);		    
                 }
                 pKFi->mnRelocWords++;
             }
@@ -242,6 +244,7 @@ vector<KeyFrame*> KeyFrameDatabase::DetectRelocalizationCandidates(Frame *F)
 
     list<pair<float,KeyFrame*> > lScoreAndMatch;
 
+    //no use
     int nscores=0;
 
     // Compute similarity score.
@@ -256,6 +259,12 @@ vector<KeyFrame*> KeyFrameDatabase::DetectRelocalizationCandidates(Frame *F)
             pKFi->mRelocScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
+        //zhang:adding
+        else
+	{	  
+	    float si = mpVoc->score(F->mBowVec,pKFi->mBowVec);
+	    pKFi->mRelocScore=si;
+	}
     }
 
     if(lScoreAndMatch.empty())
@@ -278,6 +287,51 @@ vector<KeyFrame*> KeyFrameDatabase::DetectRelocalizationCandidates(Frame *F)
             KeyFrame* pKF2 = *vit;
             if(pKF2->mnRelocQuery!=F->mnId)
                 continue;
+	    
+	    //zhang:test pKF2 not in lScoreAndMatch
+	    /*bool test_in1 =false;
+	    //bool test_in2 =false;
+	    for(list<pair<float,KeyFrame*> >::iterator testit=lScoreAndMatch.begin(), testitend=lScoreAndMatch.end(); testit!=testitend; testit++)	      
+	    {
+	      if(testit->second==pKF2)
+		test_in1 = true;
+	    }
+	    //for(list<KeyFrame*>::iterator testlit=lKFsSharingWords.begin(), testlend= lKFsSharingWords.end(); testlit!=testlend; testlit++)
+	    //{
+	     // if(*testlit==pKF2)
+		//test_in2 = true;
+	    //}
+	    if(!test_in1)
+	    {
+	      float score1 = pKF2->mRelocScore;
+	      float si = mpVoc->score(F->mBowVec,pKF2->mBowVec);
+              pKF2->mRelocScore=si;
+	      if(score1!=si)
+	      {
+		cout << "the score is different in 1:"<<score1<<" "<<si<<endl;		
+	      }	      
+	      else
+	      {
+		cout << "the score is same in 1:"<<score1<<" "<<si<<endl;
+	      }
+	      //cout << "KF not in lScoreAndMatch" << endl;
+	      //if(!test_in2)
+	      // cout << "KF not in lScoreAndMatch and not in lKFsSharingWords" << endl;
+	    }
+	    else
+	    {
+	      float score1 = pKF2->mRelocScore;
+	      float si = mpVoc->score(F->mBowVec,pKF2->mBowVec);
+              pKF2->mRelocScore=si;
+	      if(score1!=si)
+	      {
+		cout << "the score is different in 2:"<<score1<<" "<<si<<endl;		
+	      }
+	      else
+	      {
+		cout << "the score is same in 2:"<<score1<<" "<<si<<endl;
+	      }	      
+	    }*/
 
             accScore+=pKF2->mRelocScore;
             if(pKF2->mRelocScore>bestScore)

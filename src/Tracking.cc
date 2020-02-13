@@ -1495,7 +1495,7 @@ bool Tracking::Relocalization()
                             }
                         }
                     }
-                }
+                }//end:If few inliers...
 
 
                 // If the pose is supported by enough inliers stop ransacs and continue
@@ -1504,7 +1504,7 @@ bool Tracking::Relocalization()
                     bMatch = true;
                     break;
                 }
-            }
+            }// end:If a Camera Pose is computed, optimize
         }
     }
 
