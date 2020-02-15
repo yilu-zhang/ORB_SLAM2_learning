@@ -148,6 +148,7 @@ void PnPsolver::SetRansacParameters(double probability, int minInliers, int maxI
         nIterations=1;
     else
 	//mRansacEpsilon越大迭代越少
+	//zhang:different with books
         nIterations = ceil(log(1-mRansacProb)/log(1-pow(mRansacEpsilon,3)));
 
     mRansacMaxIts = max(1,min(nIterations,mRansacMaxIts));
@@ -223,7 +224,7 @@ cv::Mat PnPsolver::iterate(int nIterations, bool &bNoMore, vector<bool> &vbInlie
                 Rcw.copyTo(mBestTcw.rowRange(0,3).colRange(0,3));
                 tcw.copyTo(mBestTcw.rowRange(0,3).col(3));
             }
-
+           
             if(Refine())
             {
                 nInliers = mnRefinedInliers;

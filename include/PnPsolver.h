@@ -69,14 +69,16 @@ class PnPsolver {
 
   cv::Mat find(vector<bool> &vbInliers, int &nInliers);
 
+  //get Tcw
   //至少会迭代第一个参数次
+  //bnomore=true:mnIterations>=mRansacMaxIts||N<mRansacMinInliers
   cv::Mat iterate(int nIterations, bool &bNoMore, vector<bool> &vbInliers, int &nInliers);
 
  private:
 
    //利用重投影检查内点
   void CheckInliers();
-  bool Refine();
+  bool Refine();//use all points Compute
 
   // Functions from the original EPnP code
   void set_maximum_number_of_correspondences(const int n);
@@ -201,7 +203,7 @@ class PnPsolver {
   //程序是4个点
   int mRansacMinSet;
 
-  // Max square error associated with scale level. Max error = th*th*sigma(level)*sigma(level)
+  // Max square error associated with scale level. Max error = th*sigma(level)*sigma(level)
   vector<float> mvMaxError;
 
 };
