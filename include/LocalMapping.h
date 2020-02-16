@@ -97,7 +97,7 @@ protected:
     bool mbResetRequested;
     std::mutex mMutexReset;
 
-    bool CheckFinish();
+    bool CheckFinish();//mbFinishRequested
     void SetFinish();
     bool mbFinishRequested;
     bool mbFinished;
