@@ -352,12 +352,12 @@ void KeyFrame::UpdateConnections()
         pKFmax->AddConnection(this,nmax);
     }
 
+    //从小到大排列
     sort(vPairs.begin(),vPairs.end());
     list<KeyFrame*> lKFs;
     list<int> lWs;
     for(size_t i=0; i<vPairs.size();i++)
-    {
-	//从大到小排列
+    {	
         lKFs.push_front(vPairs[i].second);
         lWs.push_front(vPairs[i].first);
     }

@@ -84,6 +84,7 @@ void LocalMapping::Run()
                 KeyFrameCulling();
             }
 
+            //mlpLoopKeyFrameQueue.push_back(pKF)
             mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
         }
         else if(Stop())

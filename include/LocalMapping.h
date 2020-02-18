@@ -82,6 +82,7 @@ protected:
     void ProcessNewKeyFrame();
     void CreateNewMapPoints();
 
+    //
     void MapPointCulling();
     void SearchInNeighbors();
 
@@ -113,6 +114,7 @@ protected:
 
     KeyFrame* mpCurrentKeyFrame;
 
+    //moncular:creat by triangularization in LocalMapping
     std::list<MapPoint*> mlpRecentAddedMapPoints;
 
     std::mutex mMutexNewKFs;
