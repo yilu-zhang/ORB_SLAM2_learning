@@ -80,6 +80,7 @@ public:
 
     float GetMinDistanceInvariance(); //0.8f*mfMinDistance
     float GetMaxDistanceInvariance(); //1.2f*mfMaxDistance
+    //log(mfMaxDistance/currentDist)/pKF->mfLogScaleFactor,why mfMaxDistance?
     int PredictScale(const float &currentDist, KeyFrame*pKF);
     int PredictScale(const float &currentDist, Frame* pF);
 

@@ -917,7 +917,6 @@ int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const
             continue;
 
         // Match to the most similar keypoint in the radius
-
         const cv::Mat dMP = pMP->GetDescriptor();
 
         int bestDist = 256;
@@ -947,6 +946,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const
                 if(e2*pKF->mvInvLevelSigma2[kpLevel]>7.8)
                     continue;
             }
+            //monocular
             else
             {
                 const float &kpx = kp.pt.x;
