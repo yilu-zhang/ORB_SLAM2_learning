@@ -125,7 +125,7 @@ protected:
     KeyFrame* mpCurrentKF;
     KeyFrame* mpMatchedKF;
     std::vector<ConsistentGroup> mvConsistentGroups;
-    std::vector<KeyFrame*> mvpEnoughConsistentCandidates;
+    std::vector<KeyFrame*> mvpEnoughConsistentCandidates;//only save last vpCandidateKFs
     std::vector<KeyFrame*> mvpCurrentConnectedKFs;
     std::vector<MapPoint*> mvpCurrentMatchedPoints;
     std::vector<MapPoint*> mvpLoopMapPoints;

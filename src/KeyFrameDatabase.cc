@@ -121,7 +121,7 @@ vector<KeyFrame*> KeyFrameDatabase::DetectLoopCandidates(KeyFrame* pKF, float mi
             maxCommonWords=(*lit)->mnLoopWords;
     }
 
-    ////threshold value 2
+    //threshold value 2
     int minCommonWords = maxCommonWords*0.8f;
 
     //no use
@@ -179,7 +179,7 @@ vector<KeyFrame*> KeyFrameDatabase::DetectLoopCandidates(KeyFrame* pKF, float mi
             bestAccScore=accScore;
     }
 
-    ////threshold value 3
+    //threshold value 3
     // Return all those keyframes with a score higher than 0.75*bestScore
     float minScoreToRetain = 0.75f*bestAccScore;
 

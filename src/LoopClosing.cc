@@ -146,7 +146,7 @@ bool LoopClosing::DetectLoop()
     if(vpCandidateKFs.empty())
     {
         mpKeyFrameDB->add(mpCurrentKF);
-        mvConsistentGroups.clear();
+        mvConsistentGroups.clear();  //for consistency
         mpCurrentKF->SetErase();
         return false;
     }
@@ -226,7 +226,7 @@ bool LoopClosing::DetectLoop()
         return true;
     }
 
-    //don't go to here?
+    //zhang:don't go to here
     mpCurrentKF->SetErase();
     return false;
 }
