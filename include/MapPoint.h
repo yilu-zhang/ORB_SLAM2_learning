@@ -60,6 +60,7 @@ public:
     void SetBadFlag();
     bool isBad();
 
+    //pMP Replace this
     void Replace(MapPoint* pMP);    
     MapPoint* GetReplaced();
 

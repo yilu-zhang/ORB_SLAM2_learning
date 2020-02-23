@@ -55,7 +55,7 @@ protected:
 
     // Horn 1987, Closed-form solution of absolute orientataion using unit quaternions
     void ComputeSim3(cv::Mat &P1, cv::Mat &P2);
-
+    //use sim3 to reproject each other
     void CheckInliers();
 
     void Project(const std::vector<cv::Mat> &vP3Dw, std::vector<cv::Mat> &vP2D, cv::Mat Tcw, cv::Mat K);
@@ -89,6 +89,7 @@ protected:
     cv::Mat mt12i;
     float ms12i;
     //include scale
+    //p1=mT12i*p2,mT12i=[sR12 t]
     cv::Mat mT12i;
     cv::Mat mT21i;
     std::vector<bool> mvbInliersi;

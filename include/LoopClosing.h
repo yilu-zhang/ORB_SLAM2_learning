@@ -127,9 +127,10 @@ protected:
     std::vector<ConsistentGroup> mvConsistentGroups;
     std::vector<KeyFrame*> mvpEnoughConsistentCandidates;//only save last vpCandidateKFs
     std::vector<KeyFrame*> mvpCurrentConnectedKFs;
-    std::vector<MapPoint*> mvpCurrentMatchedPoints;
-    std::vector<MapPoint*> mvpLoopMapPoints;
-    cv::Mat mScw;
+    //matched mvpLoopMapPoints by protected from the points of KFs connected mpMatchedKF to mpCurrentKF using sim
+    std::vector<MapPoint*> mvpCurrentMatchedPoints; 
+    std::vector<MapPoint*> mvpLoopMapPoints; //all points of KFs connected mpMatchedKF
+    cv::Mat mScw;//sim from world frame(the point in loop KF) to current KF
     g2o::Sim3 mg2oScw;
 
     long unsigned int mLastLoopKFid;

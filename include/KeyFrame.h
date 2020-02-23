@@ -65,7 +65,7 @@ public:
     void UpdateConnections();
     void UpdateBestCovisibles();
     std::set<KeyFrame *> GetConnectedKeyFrames();
-    std::vector<KeyFrame* > GetVectorCovisibleKeyFrames();
+    std::vector<KeyFrame* > GetVectorCovisibleKeyFrames();//mvpOrderedConnectedKeyFrames
     std::vector<KeyFrame*> GetBestCovisibilityKeyFrames(const int &N);
     std::vector<KeyFrame*> GetCovisiblesByWeight(const int &w);
     int GetWeight(KeyFrame* pKF);
@@ -236,7 +236,7 @@ protected:
     std::set<KeyFrame*> mspLoopEdges;
 
     // Bad flags
-    bool mbNotErase;
+    bool mbNotErase;//avoid erase.when it is loop KF,mbNotErase=true,don't be change.
     bool mbToBeErased;
     bool mbBad;    
 

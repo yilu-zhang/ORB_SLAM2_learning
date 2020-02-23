@@ -860,10 +860,11 @@ void Optimizer::OptimizeEssentialGraph(Map* pMap, KeyFrame* pLoopKF, KeyFrame* p
 
         for(set<KeyFrame*>::const_iterator sit=spConnections.begin(), send=spConnections.end(); sit!=send; sit++)
         {
-            const long unsigned int nIDj = (*sit)->mnId;
+            const long unsigned int nIDj = (*sit)->mnId;	    
             if((nIDi!=pCurKF->mnId || nIDj!=pLoopKF->mnId) && pKF->GetWeight(*sit)<minFeat)
                 continue;
 
+	    //pKF->GetWeight(*sit)>minFeat||(nIDi==pCurKF->mnId || nIDj==pLoopKF->mnId)
             const g2o::Sim3 Sjw = vScw[nIDj];
             const g2o::Sim3 Sji = Sjw * Swi;
 

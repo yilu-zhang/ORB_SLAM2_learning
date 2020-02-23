@@ -265,6 +265,7 @@ bool LoopClosing::ComputeSim3()
             continue;
         }
 
+        //vvpMapPointMatches[i][mpCurrentKF.index]=pKF.point
         int nmatches = matcher.SearchByBoW(mpCurrentKF,pKF,vvpMapPointMatches[i]);
 
         if(nmatches<20)
@@ -320,6 +321,7 @@ bool LoopClosing::ComputeSim3()
                        vpMapPointMatches[j]=vvpMapPointMatches[i][j];
                 }
 
+                //R12,1-curret,2-loopKF
                 cv::Mat R = pSolver->GetEstimatedRotation();
                 cv::Mat t = pSolver->GetEstimatedTranslation();
                 const float s = pSolver->GetEstimatedScale();
@@ -342,7 +344,7 @@ bool LoopClosing::ComputeSim3()
                 }
             }
         }
-    }
+    }//end while
 
     if(!bMatch)
     {
@@ -599,6 +601,7 @@ void LoopClosing::SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap)
         g2o::Sim3 g2oScw = mit->second;
         cv::Mat cvScw = Converter::toCvMat(g2oScw);
 
+	//the points in KF conected to current KF waiting to fuse,the index is same as mvpLoopMapPoints
         vector<MapPoint*> vpReplacePoints(mvpLoopMapPoints.size(),static_cast<MapPoint*>(NULL));
         matcher.Fuse(pKF,cvScw,mvpLoopMapPoints,4,vpReplacePoints);
 
