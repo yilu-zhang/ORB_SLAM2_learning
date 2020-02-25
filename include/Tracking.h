@@ -199,7 +199,7 @@ protected:
     //New KeyFrame rules (according to fps)
     //0
     int mMinFrames;
-    //等于帧率
+    //=fps,used to decide to insert keyframes and to check relocalization
     int mMaxFrames;
 
     // Threshold close/far points
