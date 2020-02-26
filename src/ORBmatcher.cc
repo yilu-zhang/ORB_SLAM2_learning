@@ -455,7 +455,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
 
             int dist = DescriptorDistance(d1,d2);
 
-	    //i1特征点是有重合的
+	    //disr>=predist,Discard
             if(vMatchedDistance[i2]<=dist)
                 continue;
 
@@ -476,7 +476,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
         {
             if(bestDist<(float)bestDist2*mfNNratio)
             {
-		//当前帧该点已有和1匹配的点，说明是第二次匹配，是误匹配
+		//当前帧该点已有和1匹配的点，说明是第二次匹配，是误匹配,change match
                 if(vnMatches21[bestIdx2]>=0)
                 {
                     vnMatches12[vnMatches21[bestIdx2]]=-1;

@@ -600,6 +600,9 @@ void Tracking::MonocularInitialization()
 	//特征点大于100匹配点才可能大于100
         if((int)mCurrentFrame.mvKeys.size()<=100)
         {
+	    //zhang:init failure 1
+	    //cout<<"init failure in 1:futures less than 100.the error is:"<<100-(int)mCurrentFrame.mvKeys.size()<<endl;
+	    
             delete mpInitializer;
             mpInitializer = static_cast<Initializer*>(NULL);
             fill(mvIniMatches.begin(),mvIniMatches.end(),-1);
@@ -613,7 +616,10 @@ void Tracking::MonocularInitialization()
         // Check if there are enough correspondences
         if(nmatches<100)
         {
-            delete mpInitializer;
+	    //zhang:init failure 2
+	    //cout<<"init failure in 2:matched features less than 100.the error is:"<<100-nmatches<<endl;
+            
+	    delete mpInitializer;
             mpInitializer = static_cast<Initializer*>(NULL);
             return;
         }

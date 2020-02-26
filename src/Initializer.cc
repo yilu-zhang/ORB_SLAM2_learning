@@ -117,8 +117,11 @@ bool Initializer::Initialize(const Frame &CurrentFrame, const vector<int> &vMatc
     // Compute ratio of scores
     float RH = SH/(SH+SF);
 
+    //zhang:init test
+    //cout<<"the RH is:"<<RH<<endl;
+    
     // Try to reconstruct from homography or fundamental depending on the ratio (0.40-0.45)
-    if(RH>0.40)
+    if(RH>0.46)//zhang:0.4 to 0.46
         return ReconstructH(vbMatchesInliersH,H,mK,R21,t21,vP3D,vbTriangulated,1.0,50);
     else //if(pF_HF>0.6)
         return ReconstructF(vbMatchesInliersF,F,mK,R21,t21,vP3D,vbTriangulated,1.0,50);
@@ -538,6 +541,11 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
     // If there is not a clear winner or not enough triangulated points reject initialization
     if(maxGood<nMinGood || nsimilar>1)//50
     {
+	//zhang:init failure 3-F
+	/*if(maxGood<nMinGood)
+	  cout<<"init failure in 3-F:not enough triangulated points.the error is:"<<nMinGood-maxGood<<endl;
+	if(nsimilar>1)
+	  cout<<"init failure in 3-F:not a clear winner.the nsimilar is:"<<nsimilar<<" maxGood is:"<< maxGood<<endl;*/
         return false;
     }
 
@@ -621,6 +629,8 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
     //d1>d2>d3
     if(d1/d2<1.00001 || d2/d3<1.00001)
     {
+	//zhang:init failure 3-H
+	cout<<"init failure in 3-H:not d1>d2>d3."<<endl;
         return false;
     }
 
@@ -754,6 +764,16 @@ bool Initializer::ReconstructH(vector<bool> &vbMatchesInliers, cv::Mat &H21, cv:
 
         return true;
     }
+    
+    //zhang:init failure 4-H
+    /*if(secondBestGood>=0.75*bestGood)
+      cout<<"init failure in 4-H:secondBestGood>=0.75*bestGood.the error is:"<<secondBestGood-0.75*bestGood<<" the secondBestGood is:"<<secondBestGood<<endl;
+    if(bestParallax<minParallax)
+      cout<<"init failure in 4-H:bestParallax<minParallax.the error is:"<<minParallax-bestParallax<<endl;
+    if(bestGood<=minTriangulated)
+      cout<<"init failure in 4-H:bestGood<=minTriangulated.the error is:"<<minTriangulated-bestGood<<endl;
+    if(bestGood<=0.9*N)
+      cout<<"init failure in 4-H:bestGood<=0.9*N.the error is:"<<0.9*N-bestGood<<endl;*/
 
     return false;
 }
