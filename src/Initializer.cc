@@ -543,14 +543,13 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
     {
 	//zhang:init failure 3-F
 	/*if(maxGood<nMinGood)
-	  cout<<"init failure in 3-F:not enough triangulated points.the error is:"<<nMinGood-maxGood<<endl;
+	  cout<<"init failure in 3-F:not enough triangulated points.the error is:"<<nMinGood-maxGood<<" nMinGood is:"<<nMinGood<<endl;
 	if(nsimilar>1)
 	  cout<<"init failure in 3-F:not a clear winner.the nsimilar is:"<<nsimilar<<" maxGood is:"<< maxGood<<endl;*/
         return false;
     }
 
     // If best reconstruction has enough parallax initialize
-    //传参
     if(maxGood==nGood1)
     {
         if(parallax1>minParallax)//1
@@ -597,6 +596,8 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
         }
     }
 
+    //zhang:init failure 4-F
+    //cout<<"init failure 4-F,bad parallax."<<endl;
     return false;
 }
 

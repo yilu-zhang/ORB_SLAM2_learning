@@ -60,6 +60,7 @@ public:
 
     void clear();
 
+    //init KF
     vector<KeyFrame*> mvpKeyFrameOrigins;
 
     std::mutex mMutexMapUpdate;
