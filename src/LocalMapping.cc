@@ -92,6 +92,7 @@ void LocalMapping::Run()
             // Safe area to stop
             while(isStopped() && !CheckFinish())
             {
+		//CorrectLoop
                 usleep(3000);
             }
             if(CheckFinish())

@@ -64,6 +64,7 @@ public:
     void Replace(MapPoint* pMP);    
     MapPoint* GetReplaced();
 
+    //only use in tracklocalmap of tracking and pMP replace
     void IncreaseVisible(int n=1);
     void IncreaseFound(int n=1);
     float GetFoundRatio();
