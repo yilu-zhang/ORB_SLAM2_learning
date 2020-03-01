@@ -107,6 +107,8 @@ void LocalMapping::Run()
         if(CheckFinish())
             break;
 
+	//idle,leave time to Tracking
+	//is too long?
         usleep(3000);
     }
 
@@ -429,6 +431,7 @@ void LocalMapping::CreateNewMapPoints()
 
             /*if(fabs(ratioDist-ratioOctave)>ratioFactor)
                 continue;*/
+	    //ratioDist is similarity to ratioOctave
             if(ratioDist*ratioFactor<ratioOctave || ratioDist>ratioOctave*ratioFactor)
                 continue;
 
