@@ -834,7 +834,10 @@ void Optimizer::OptimizeEssentialGraph(Map* pMap, KeyFrame* pLoopKF, KeyFrame* p
 
         if(pKF==pLoopKF)
             VSim3->setFixed(true);
-
+	//zhang:BUG,forget to setting fixed?
+	else
+	  VSim3->setFixed(nIDi==0);
+	  
         VSim3->setId(nIDi);
         VSim3->setMarginalized(false);
         VSim3->_fix_scale = bFixScale;
