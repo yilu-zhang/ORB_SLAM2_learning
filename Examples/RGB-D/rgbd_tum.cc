@@ -30,6 +30,7 @@
 
 using namespace std;
 
+//vTimestamps=rgb_time
 void LoadImages(const string &strAssociationFilename, vector<string> &vstrImageFilenamesRGB,
                 vector<string> &vstrImageFilenamesD, vector<double> &vTimestamps);
 
